@@ -52,7 +52,8 @@ def load_data(dataset_str):
 
     x, y, tx, ty, allx, ally, graph = tuple(objects)
     # x = np.array()
-    # print(allx)
+    print(graph)
+    # print(tx.shape)
 
     test_idx_reorder = parse_index_file("data/ind.{}.test.index".format(dataset_str))
     test_idx_range = np.sort(test_idx_reorder)

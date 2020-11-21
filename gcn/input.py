@@ -13,47 +13,125 @@ def get_data_from_file(file_text, file_pos):
         lines = f1.readlines()
         pos_lines = f2.readlines()
         last = -1
-
-        for i, line in enumerate(lines):
-            if i <= last:
+        arr_pos = []
+        arr_num = []
+        for num_line, line in enumerate(lines):
+            if num_line <= last:
                 continue
-            num_line = line.split("\t")[1]
-            file_name = line.split("\t")[0]
-            # f3.write(line.split("\t")[0])
-            width = pos_lines[i].split("\t")[1]
-            height = pos_lines[i].split("\t")[2]
-            # print(line, num_line)
-            data = []
-            arr_node = []
-            arr_adj = []
-            arr_line = []
-            for j in range(i + 1, i + int(num_line) + 1):
-                temp_str = lines[j].split("\t")
-                temp_str[-1] = temp_str[-1][0:-1]
-                str_pre = ""
-                for s in temp_str:
-                    if str_pre == "":
-                        str_pre += s
-                    else:
-                        str_pre += " " + s
-                data.append(str_pre)
-                last = j
-                ######## read file pos
-                temp_line = pos_lines[j].split(";")
+            # i = num_line
+            matrix = []
+            num_line_item = int(line.split("\t")[1])
+            # item_name = line.split("\t")[0]
+            if num_line_item == 10 or num_line_item == 11 or num_line_item == 9:
+                arr_num.append(num_line_item)
+            print('num_line_item', num_line_item)
+            k = 0
+            while(k <= num_line_item):
+                # read file position
+                print('k', k)
+                temp_line = pos_lines[k].split(";")
+                pos_center = get_pos_label(k, temp_line, num_line_item)
+                print('pos', pos_center)
+                k += 1
+                if pos_center is None:
+                    continue
+                arr_pos.append(pos_center)
 
-                tl_x, tl_y, br_x, br_y = 10000, 10000, 0, 0
-                for k in range(len(temp_line)):
-                    a = temp_line[k].split(" ")
-                    b = []
-                    for h in range(len(a)):
-                        b.append(int(a[h]))
-                    tl_x = min(tl_x, b[0], b[2], b[4], b[6])
-                    tl_y = min(tl_y, b[1], b[3], b[5], b[7])
-                    br_x = max(br_x, b[0], b[2], b[4], b[6])
-                    br_y = max(br_y, b[1], b[3], b[5], b[7])
-                    x_input = (br_x - tl_x) / 2
-                    y_input = (br_y - tl_y) / 2
-                arr_line.append([tl_x, tl_y, br_x, br_y])
-                arr_node.append([x_input,y_input])
+            last = num_line + int(num_line_item)
+            # break
+        print('arr_pos', arr_pos, len(arr_pos), len(arr_num))
+    return arr_pos
 
-            return (arr_node)
+
+def get_pos_label(k, temp_line, num_line_item):
+    rs = []
+    if num_line_item == 10:
+        if k == 4:
+            so = temp_line[:1]
+            rs = so
+            print('so', rs)
+        elif k == 5:
+            ho_ten = temp_line[:2]
+            rs = ho_ten
+            print('ho ten', rs)
+        elif k == 6:
+            ngay_sinh = temp_line[:2]
+            rs = ngay_sinh
+            print('ngay_sinh', rs)
+        elif k == 7:
+            que_quan = temp_line[:2]
+            rs = que_quan
+            print('que_quan', rs)
+        elif k == 9:
+            dk_tt = temp_line[:4]
+            rs = dk_tt
+            print('dk_tt', rs)
+
+    elif num_line_item == 11:
+        if k == 4:
+            so = temp_line[:1]
+            rs = so
+            print('so', rs)
+        elif k == 5:
+            ho_ten = temp_line[:2]
+            rs = ho_ten
+            print('ho ten', rs)
+        elif k == 7:
+            ngay_sinh = temp_line[:2]
+            rs = ngay_sinh
+            print('ngay_sinh', rs)
+        elif k == 8:
+            que_quan = temp_line[:2]
+            rs = que_quan
+            print('que_quan', rs)
+        elif k == 10:
+            dk_tt = temp_line[:4]
+            rs = dk_tt
+            print('dk_tt', rs)
+
+    elif num_line_item == 9:
+        if k == 4:
+            so = temp_line[:1]
+            rs = so
+            print('so', rs)
+        elif k == 5:
+            ho_ten = temp_line[:2]
+            rs = ho_ten
+            print('ho ten', rs)
+        elif k == 6:
+            ngay_sinh = temp_line[:2]
+            rs = ngay_sinh
+            print('ngay_sinh', rs)
+        elif k == 7:
+            que_quan = temp_line[:2]
+            rs = que_quan
+            print('que_quan', rs)
+        elif k == 8:
+            dk_tt = temp_line[:4]
+            rs = dk_tt
+            print('dk_tt', rs)
+
+    for i in range(len(rs)):
+        arr = rs[i].split(" ")
+        arr_num = []
+
+        for j in range(len(arr)):
+            arr_num.append(int(arr[j]))
+
+        min_x, min_y, max_x, max_y = 10000, 10000, 0, 0
+        min_x = min(min_x, arr_num[0], arr_num[2], arr_num[4], arr_num[6])
+        min_y = min(min_y, arr_num[1], arr_num[3], arr_num[5], arr_num[7])
+        max_x = max(max_x, arr_num[0], arr_num[2], arr_num[4], arr_num[6])
+        max_y = max(max_y, arr_num[1], arr_num[3], arr_num[5], arr_num[7])
+
+        pos_left_down = [min_x , max_y]
+        pos_right_top = [max_x, min_y]
+        pos_x = pos_left_down[0] + (pos_right_top[0] - pos_left_down[0])/2
+        pos_y = pos_right_top[1] + (pos_left_down[1] - pos_right_top[1])/2
+        pos_center = [pos_x, pos_y]
+
+        print('pos_center', pos_center)
+
+        return pos_center
+
+get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')

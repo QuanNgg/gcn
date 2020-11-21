@@ -31,7 +31,7 @@ adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_da
 # print(train_mask)
 # print('shape', features.shape)
 # print('train_mask', train_mask)
-print('features', adj)
+# print('features', adj)
 # Some preprocessing
 features = preprocess_features(features)
 # print('fe', features)
