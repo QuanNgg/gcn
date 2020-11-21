@@ -49,67 +49,67 @@ def get_pos_label(k, temp_line, num_line_item):
         if k == 4:
             so = temp_line[:1]
             rs = so
-            print('so', rs)
+            # print('so', rs)
         elif k == 5:
             ho_ten = temp_line[:2]
             rs = ho_ten
-            print('ho ten', rs)
+            # print('ho ten', rs)
         elif k == 6:
             ngay_sinh = temp_line[:2]
             rs = ngay_sinh
-            print('ngay_sinh', rs)
+            # print('ngay_sinh', rs)
         elif k == 7:
             que_quan = temp_line[:2]
             rs = que_quan
-            print('que_quan', rs)
+            # print('que_quan', rs)
         elif k == 9:
             dk_tt = temp_line[:4]
             rs = dk_tt
-            print('dk_tt', rs)
+            # print('dk_tt', rs)
 
     elif num_line_item == 11:
         if k == 4:
             so = temp_line[:1]
             rs = so
-            print('so', rs)
+            # print('so', rs)
         elif k == 5:
             ho_ten = temp_line[:2]
             rs = ho_ten
-            print('ho ten', rs)
+            # print('ho ten', rs)
         elif k == 7:
             ngay_sinh = temp_line[:2]
             rs = ngay_sinh
-            print('ngay_sinh', rs)
+            # print('ngay_sinh', rs)
         elif k == 8:
             que_quan = temp_line[:2]
             rs = que_quan
-            print('que_quan', rs)
+            # print('que_quan', rs)
         elif k == 10:
             dk_tt = temp_line[:4]
             rs = dk_tt
-            print('dk_tt', rs)
+            # print('dk_tt', rs)
 
     elif num_line_item == 9:
         if k == 4:
             so = temp_line[:1]
             rs = so
-            print('so', rs)
+            # print('so', rs)
         elif k == 5:
             ho_ten = temp_line[:2]
             rs = ho_ten
-            print('ho ten', rs)
+            # print('ho ten', rs)
         elif k == 6:
             ngay_sinh = temp_line[:2]
             rs = ngay_sinh
-            print('ngay_sinh', rs)
+            # print('ngay_sinh', rs)
         elif k == 7:
             que_quan = temp_line[:2]
             rs = que_quan
-            print('que_quan', rs)
+            # print('que_quan', rs)
         elif k == 8:
             dk_tt = temp_line[:4]
             rs = dk_tt
-            print('dk_tt', rs)
+            # print('dk_tt', rs)
 
     for i in range(len(rs)):
         arr = rs[i].split(" ")
