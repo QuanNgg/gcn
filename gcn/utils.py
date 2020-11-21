@@ -4,6 +4,7 @@ import networkx as nx
 import scipy.sparse as sp
 from scipy.sparse.linalg.eigen.arpack import eigsh
 import sys
+from gcn import input
 
 
 def parse_index_file(filename):
@@ -52,8 +53,14 @@ def load_data(dataset_str):
 
     x, y, tx, ty, allx, ally, graph = tuple(objects)
     # x = np.array()
-    print(graph)
-    # print(tx.shape)
+    # print(y, y.shape)
+    # print(x.shape)
+    # print(x)
+    # allx, graph, ally = input.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
+    # y = ally
+    # print(len(y))
+    # x = allx
+    # tx, graph_test, ty = input.get_data_from_file('./raw/text_3.txt', './raw/pos_3.txt')
 
     test_idx_reorder = parse_index_file("data/ind.{}.test.index".format(dataset_str))
     test_idx_range = np.sort(test_idx_reorder)
@@ -79,7 +86,6 @@ def load_data(dataset_str):
     idx_test = test_idx_range.tolist()
     idx_train = range(len(y))
     idx_val = range(len(y), len(y)+500)
-
     train_mask = sample_mask(idx_train, labels.shape[0])
     val_mask = sample_mask(idx_val, labels.shape[0])
     test_mask = sample_mask(idx_test, labels.shape[0])
