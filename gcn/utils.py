@@ -51,12 +51,12 @@ def load_data(dataset_str):
             else:
                 objects.append(pkl.load(f))
 
-    x, y, tx, ty, allx, ally, graph = tuple(objects)
+    # x, y, tx, ty, allx, ally, graph = tuple(objects)
     # x = np.array()
     # print(y, y.shape)
     # print(x.shape)
     # print(x)
-    # allx, graph, ally = input.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
+    allx, graph, ally = input.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
     # y = ally
     # print(len(y))
     # x = allx
@@ -65,27 +65,31 @@ def load_data(dataset_str):
     test_idx_reorder = parse_index_file("data/ind.{}.test.index".format(dataset_str))
     test_idx_range = np.sort(test_idx_reorder)
 
-    if dataset_str == 'citeseer':
-        # Fix citeseer dataset (there are some isolated nodes in the graph)
-        # Find isolated nodes, add them as zero-vecs into the right position
-        test_idx_range_full = range(min(test_idx_reorder), max(test_idx_reorder)+1)
-        tx_extended = sp.lil_matrix((len(test_idx_range_full), x.shape[1]))
-        tx_extended[test_idx_range-min(test_idx_range), :] = tx
-        tx = tx_extended
-        ty_extended = np.zeros((len(test_idx_range_full), y.shape[1]))
-        ty_extended[test_idx_range-min(test_idx_range), :] = ty
-        ty = ty_extended
+    # if dataset_str == 'citeseer':
+    #     # Fix citeseer dataset (there are some isolated nodes in the graph)
+    #     # Find isolated nodes, add them as zero-vecs into the right position
+    #     test_idx_range_full = range(min(test_idx_reorder), max(test_idx_reorder)+1)
+    #     tx_extended = sp.lil_matrix((len(test_idx_range_full), x.shape[1]))
+    #     tx_extended[test_idx_range-min(test_idx_range), :] = tx
+    #     tx = tx_extended
+    #     ty_extended = np.zeros((len(test_idx_range_full), y.shape[1]))
+    #     ty_extended[test_idx_range-min(test_idx_range), :] = ty
+    #     ty = ty_extended
 
-    features = sp.vstack((allx, tx)).tolil()
+    # features = sp.vstack((allx, tx)).tolil()
+    features = allx.tolil()
     features[test_idx_reorder, :] = features[test_idx_range, :]
     adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
 
-    labels = np.vstack((ally, ty))
+    # labels = np.vstack((ally, ty))
+    labels = np.array(ally,dtype=float)
     labels[test_idx_reorder, :] = labels[test_idx_range, :]
-
+    # print(labels, labels.shape)
     idx_test = test_idx_range.tolist()
-    idx_train = range(len(y))
-    idx_val = range(len(y), len(y)+500)
+    # idx_train = range(len(y))
+    # idx_val = range(len(y), len(y)+500)
+    idx_train = range(len(ally))
+    idx_val = range(len(ally))
     train_mask = sample_mask(idx_train, labels.shape[0])
     val_mask = sample_mask(idx_val, labels.shape[0])
     test_mask = sample_mask(idx_test, labels.shape[0])
