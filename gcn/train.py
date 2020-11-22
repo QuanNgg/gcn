@@ -35,6 +35,12 @@ labels = y_train
 idx_train = range(len(y_train))
 train_mask = sample_mask(idx_train, labels.shape[0])
 
+y_val = np.zeros(labels.shape)
+
+idx_val = range(len(y_train))
+val_mask = sample_mask(idx_val, labels.shape[0])
+y_val[val_mask, :] = labels[val_mask, :]
+
 # print(train_mask)
 # print('shape', features.shape)
 # print('train_mask', train_mask)
@@ -88,7 +94,7 @@ sess.run(tf.compat.v1.global_variables_initializer())
 cost_val = []
 
 # Train model
-for epoch in range(10):
+for epoch in range(FLAGS.epochs):
 
     t = time.time()
     # Construct feed dictionary
@@ -98,9 +104,9 @@ for epoch in range(10):
     # Training step
     outs = sess.run([model.opt_op, model.loss, model.accuracy], feed_dict=feed_dict)
 
-    # # Validation
-    # cost, acc, duration = evaluate(features, support, y_val, val_mask, placeholders)
-    # cost_val.append(cost)
+    # Validation
+    cost, acc, duration = evaluate(features, support, y_val, val_mask, placeholders)
+    cost_val.append(cost)
 
     # Print results
     # print("Epoch:", '%04d' % (epoch + 1), "train_loss=", "{:.5f}".format(outs[1]),
@@ -108,9 +114,9 @@ for epoch in range(10):
     #       "val_acc=", "{:.5f}".format(acc), "time=", "{:.5f}".format(time.time() - t))
     print("Epoch:", '%04d' % (epoch + 1), "train_loss=", "{:.5f}".format(outs[1]),
           "train_acc=", "{:.5f}".format(outs[2]), "val_loss=", "time=", "{:.5f}".format(time.time() - t))
-    if epoch > FLAGS.early_stopping and cost_val[-1] > np.mean(cost_val[-(FLAGS.early_stopping+1):-1]):
-        print("Early stopping...")
-        break
+    # if epoch > FLAGS.early_stopping and cost_val[-1] > np.mean(cost_val[-(FLAGS.early_stopping+1):-1]):
+    #     print("Early stopping...")
+    #     break
 
 print("Optimization Finished!")
 
