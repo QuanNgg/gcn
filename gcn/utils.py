@@ -62,8 +62,8 @@ def load_data(dataset_str):
     # x = allx
     # tx, graph_test, ty = input.get_data_from_file('./raw/text_3.txt', './raw/pos_3.txt')
 
-    test_idx_reorder = parse_index_file("data/ind.{}.test.index".format(dataset_str))
-    test_idx_range = np.sort(test_idx_reorder)
+    # test_idx_reorder = parse_index_file("data/ind.{}.test.index".format(dataset_str))
+    # test_idx_range = np.sort(test_idx_reorder)
 
     # if dataset_str == 'citeseer':
     #     # Fix citeseer dataset (there are some isolated nodes in the graph)
@@ -78,30 +78,32 @@ def load_data(dataset_str):
 
     # features = sp.vstack((allx, tx)).tolil()
     features = allx.tolil()
-    features[test_idx_reorder, :] = features[test_idx_range, :]
+    # features[test_idx_reorder, :] = features[test_idx_range, :]
     adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
 
     # labels = np.vstack((ally, ty))
     labels = np.array(ally,dtype=float)
-    labels[test_idx_reorder, :] = labels[test_idx_range, :]
+    # labels[test_idx_reorder, :] = labels[test_idx_range, :]
     # print(labels, labels.shape)
-    idx_test = test_idx_range.tolist()
+    # idx_test = test_idx_range.tolist()
     # idx_train = range(len(y))
     # idx_val = range(len(y), len(y)+500)
     idx_train = range(len(ally))
     idx_val = range(len(ally))
     train_mask = sample_mask(idx_train, labels.shape[0])
     val_mask = sample_mask(idx_val, labels.shape[0])
-    test_mask = sample_mask(idx_test, labels.shape[0])
+    # test_mask = sample_mask(idx_test, labels.shape[0])
 
     y_train = np.zeros(labels.shape)
     y_val = np.zeros(labels.shape)
     y_test = np.zeros(labels.shape)
     y_train[train_mask, :] = labels[train_mask, :]
     y_val[val_mask, :] = labels[val_mask, :]
-    y_test[test_mask, :] = labels[test_mask, :]
+    # y_test[test_mask, :] = labels[test_mask, :]
 
-    return adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask
+    # return adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask
+    return adj, features, y_train, y_val, y_test, train_mask, val_mask#, test_mask
+
 
 
 def sparse_to_tuple(sparse_mx):

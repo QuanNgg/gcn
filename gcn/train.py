@@ -28,23 +28,8 @@ flags.DEFINE_integer('early_stopping', 10, 'Tolerance for early stopping (# of e
 flags.DEFINE_integer('max_degree', 3, 'Maximum Chebyshev polynomial degree.')
 
 # Load data
-adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_data(FLAGS.dataset)
-# features, graph, y_train = input.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
-# adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
-# labels = y_train
-# idx_train = range(len(y_train))
-# train_mask = sample_mask(idx_train, labels.shape[0])
-#
-# y_val = np.zeros(labels.shape)
-#
-# idx_val = range(len(y_train))
-# val_mask = sample_mask(idx_val, labels.shape[0])
-# y_val[val_mask, :] = labels[val_mask, :]
-#
-# print(train_mask)
-# print('shape', features.shape)
-# print('train_mask', train_mask)
-# print('features', y_train)
+# adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_data(FLAGS.dataset)
+adj, features, y_train, y_val, y_test, train_mask, val_mask= load_data(FLAGS.dataset)
 # Some preprocessing
 features = preprocess_features(features)
 # print('fe', features)
@@ -114,20 +99,16 @@ for epoch in range(FLAGS.epochs):
           "val_acc=", "{:.5f}".format(acc), "time=", "{:.5f}".format(time.time() - t))
     # print("Epoch:", '%04d' % (epoch + 1), "train_loss=", "{:.5f}".format(outs[1]),
     #       "train_acc=", "{:.5f}".format(outs[2]), "val_loss=", "time=", "{:.5f}".format(time.time() - t))
-    if epoch > FLAGS.early_stopping and cost_val[-1] > np.mean(cost_val[-(FLAGS.early_stopping+1):-1]):
-        print("Early stopping...")
-        break
+    # if epoch > FLAGS.early_stopping and cost_val[-1] > np.mean(cost_val[-(FLAGS.early_stopping+1):-1]):
+    #     print("Early stopping...")
+    #     break
 
 print("Optimization Finished!")
 
-# Testing
-test_cost, test_acc, test_duration = evaluate(features, support, y_test, test_mask, placeholders)
-print("Test set results:", "cost=", "{:.5f}".format(test_cost),
-      "accuracy=", "{:.5f}".format(test_acc), "time=", "{:.5f}".format(test_duration))
+# # Testing
+# test_cost, test_acc, test_duration = evaluate(features, support, y_test, test_mask, placeholders)
+# print("Test set results:", "cost=", "{:.5f}".format(test_cost),
+#       "accuracy=", "{:.5f}".format(test_acc), "time=", "{:.5f}".format(test_duration))
 model.save(sess)
 
-def sample_mask(idx, l):
-    """Create mask."""
-    mask = np.zeros(l)
-    mask[idx] = 1
-    return np.array(mask, dtype=np.bool)
+# Epoch: 0200 train_loss= 0.56547 train_acc= 0.97857 val_loss= 1.04744 val_acc= 0.78600 time= 0.01178
