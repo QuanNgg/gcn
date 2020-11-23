@@ -56,7 +56,12 @@ def load_data(dataset_str):
     # print(y, y.shape)
     # print(x.shape)
     # print(x)
-    allx, graph, ally = input.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
+    x, graph, y = input.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
+    tx, graph_test, ty = input.get_data_from_file('./raw/text_3.txt', './raw/pos_3.txt')
+    x1, graph_test, y1 = input.get_data_from_file('./raw/text_5.txt', './raw/pos_5.txt')
+    allx = np.vstack((x, x1))
+    ally = np.vstack((y, y1))
+
     # y = ally
     # print(len(y))
     # x = allx
