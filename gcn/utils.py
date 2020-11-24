@@ -56,8 +56,8 @@ def load_data(dataset_str):
     # print(y, y.shape)
     # print(x.shape)
     # print(x)
-    x, graph, y = input.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
-    tx, graph_test, ty = input.get_data_from_file('./raw/text_3.txt', './raw/pos_3.txt')
+    x, graph, y, index_train = input.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
+    tx, graph_test, ty, index_test = input.get_data_from_file('./raw/text_3.txt', './raw/pos_3.txt')
     x1, graph_test, y1 = input.get_data_from_file('./raw/text_5.txt', './raw/pos_5.txt')
     allx = np.vstack((x, x1))
     ally = np.vstack((y, y1))
@@ -86,8 +86,8 @@ def load_data(dataset_str):
     # features[test_idx_reorder, :] = features[test_idx_range, :]
     adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
 
-    # labels = np.vstack((ally, ty))
-    labels = np.array(ally,dtype=float)
+    labels = np.vstack((ally, ty))
+    # labels = np.array(ally,dtype=float)
     # labels[test_idx_reorder, :] = labels[test_idx_range, :]
     # print(labels, labels.shape)
     # idx_test = test_idx_range.tolist()
@@ -97,17 +97,17 @@ def load_data(dataset_str):
     idx_val = range(len(ally))
     train_mask = sample_mask(idx_train, labels.shape[0])
     val_mask = sample_mask(idx_val, labels.shape[0])
-    # test_mask = sample_mask(idx_test, labels.shape[0])
+    test_mask = ty
 
     y_train = np.zeros(labels.shape)
     y_val = np.zeros(labels.shape)
     y_test = np.zeros(labels.shape)
     y_train[train_mask, :] = labels[train_mask, :]
     y_val[val_mask, :] = labels[val_mask, :]
-    # y_test[test_mask, :] = labels[test_mask, :]
+    y_test[test_mask, :] = labels[test_mask, :]
 
-    # return adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask
-    return adj, features, y_train, y_val, y_test, train_mask, val_mask#, test_mask
+    return adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask
+    # return adj, features, y_train, y_val, y_test, train_mask, val_mask#, test_mask
 
 
 

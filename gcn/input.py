@@ -43,7 +43,7 @@ def get_data_from_file(file_text, file_pos):
         matrix_label = create_label(len(arr_pos))
         feature = sparse.csr_matrix(arr_pos)
 
-    return feature, graph, matrix_label
+    return feature, graph, matrix_label, len(arr_pos)
 
 
 def get_pos_label(k, temp_line, num_line_item):
