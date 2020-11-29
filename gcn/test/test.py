@@ -1,7 +1,7 @@
-from gcn import input
+from gcn.test import input
 # import numpy as np
 from scipy import sparse
-a, b, c = input.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
+a, b, c = input.get_data_from_file('../raw/text_1.txt', './raw/pos_1.txt')
 # print(a)
 # aa = np.zeros((11))
 # # print(aa)
@@ -22,7 +22,6 @@ a, b, c = input.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
 # print(adj.shape)
 # adj = sparse.csr_matrix(adj)
 # print('adj', adj)
-from collections import defaultdict
 import numpy as np
 # 19945
 # graph = defaultdict(list)

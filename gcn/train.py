@@ -1,14 +1,22 @@
 from __future__ import division
 from __future__ import print_function
-import networkx as nx
 
 import time
 import tensorflow as tf
 
 from gcn.utils import *
 from gcn.models import GCN, MLP
+from gcn.test import input
 import numpy
 numpy.set_printoptions(threshold=sys.maxsize)
+
+def sample_mask(idx, l):
+    """Create mask."""
+    mask = np.zeros(l)
+    mask[idx] = 1
+    return np.array(mask, dtype=np.bool)
+
+
 # Set random seed
 seed = 123
 np.random.seed(seed)
@@ -124,10 +132,7 @@ print("Optimization Finished!")
 # test_cost, test_acc, test_duration = evaluate(features, support, y_test, test_mask, placeholders)
 # print("Test set results:", "cost=", "{:.5f}".format(test_cost),
 #       "accuracy=", "{:.5f}".format(test_acc), "time=", "{:.5f}".format(test_duration))
-model.save(sess)
 
-def sample_mask(idx, l):
-    """Create mask."""
-    mask = np.zeros(l)
-    mask[idx] = 1
-    return np.array(mask, dtype=np.bool)
+# model.save(sess)
+
+new_model = model.load(sess)
