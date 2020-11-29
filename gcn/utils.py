@@ -56,20 +56,16 @@ def load_data(dataset_str):
     # print(y, y.shape)
     # print(x.shape)
     # print(x)
-    x, graph, y, index_train = input.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
-    tx, graph_test, ty, index_test = input.get_data_from_file('./raw/text_3.txt', './raw/pos_3.txt')
-    x1, graph_test, y1 = input.get_data_from_file('./raw/text_5.txt', './raw/pos_5.txt')
-    allx = np.vstack((x, x1))
-    ally = np.vstack((y, y1))
+    x, graph, y, index_train = input.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt') #train
+    tx, graph_test, ty, index_test = input.get_data_from_file('./raw/text_3.txt', './raw/pos_3.txt') #test
+    # x1, graph_test, y1, index_test1 = input.get_data_from_file('./raw/text_5.txt', './raw/pos_5.txt')
 
-    # y = ally
-    # print(len(y))
-    # x = allx
-    # tx, graph_test, ty = input.get_data_from_file('./raw/text_3.txt', './raw/pos_3.txt')
+    ally = y
+    features = x
 
     # test_idx_reorder = parse_index_file("data/ind.{}.test.index".format(dataset_str))
     # test_idx_range = np.sort(test_idx_reorder)
-
+    #
     # if dataset_str == 'citeseer':
     #     # Fix citeseer dataset (there are some isolated nodes in the graph)
     #     # Find isolated nodes, add them as zero-vecs into the right position
@@ -82,19 +78,19 @@ def load_data(dataset_str):
     #     ty = ty_extended
 
     # features = sp.vstack((allx, tx)).tolil()
-    features = allx.tolil()
+    # features = allx.tolil()
     # features[test_idx_reorder, :] = features[test_idx_range, :]
     adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
 
-    labels = np.vstack((ally, ty))
+    labels = sp.vstack((ally, ty))
     # labels = np.array(ally,dtype=float)
     # labels[test_idx_reorder, :] = labels[test_idx_range, :]
     # print(labels, labels.shape)
     # idx_test = test_idx_range.tolist()
     # idx_train = range(len(y))
     # idx_val = range(len(y), len(y)+500)
-    idx_train = range(len(ally))
-    idx_val = range(len(ally))
+    idx_train = range(ally.shape[0])
+    idx_val = range(ally.shape[0])
     train_mask = sample_mask(idx_train, labels.shape[0])
     val_mask = sample_mask(idx_val, labels.shape[0])
     test_mask = ty
