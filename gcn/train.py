@@ -28,7 +28,7 @@ flags.DEFINE_integer('max_degree', 3, 'Maximum Chebyshev polynomial degree.')
 
 # Load data
 adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_data(FLAGS.dataset)
-
+"""
 # Some preprocessing
 features = preprocess_features(features)
 
@@ -110,3 +110,4 @@ print("Test set results:", "cost=", "{:.5f}".format(test_cost),
 save = model.save(sess)
 my_model = model.load(sess)
 print(model.predict())
+"""
