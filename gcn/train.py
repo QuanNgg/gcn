@@ -6,8 +6,17 @@ import tensorflow as tf
 
 from gcn.utils import *
 from gcn.models import GCN, MLP
+from gcn.test import input
 import numpy
 numpy.set_printoptions(threshold=sys.maxsize)
+
+def sample_mask(idx, l):
+    """Create mask."""
+    mask = np.zeros(l)
+    mask[idx] = 1
+    return np.array(mask, dtype=np.bool)
+
+
 # Set random seed
 seed = 123
 np.random.seed(seed)
@@ -32,6 +41,28 @@ adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_da
 # Some preprocessing
 features = preprocess_features(features)
 
+=======
+# adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_data(FLAGS.dataset)
+features, graph, y_train = input.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
+adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
+labels = y_train
+idx_train = range(len(y_train))
+train_mask = sample_mask(idx_train, labels.shape[0])
+
+y_val = np.zeros(labels.shape)
+
+idx_val = range(len(y_train))
+val_mask = sample_mask(idx_val, labels.shape[0])
+y_val[val_mask, :] = labels[val_mask, :]
+
+# print(train_mask)
+# print('shape', features.shape)
+# print('train_mask', train_mask)
+# print('features', y_train)
+# Some preprocessing
+features = preprocess_features(features)
+# print('fe', features)
+>>>>>>> test
 if FLAGS.model == 'gcn':
     support = [preprocess_adj(adj)]
     num_supports = 1
@@ -93,6 +124,7 @@ for epoch in range(FLAGS.epochs):
     cost_val.append(cost)
 
     # Print results
+<<<<<<< HEAD
     print("Epoch:", '%04d' % (epoch + 1), "train_loss=", "{:.5f}".format(outs[1]),
           "train_acc=", "{:.5f}".format(outs[2]), "val_loss=", "{:.5f}".format(cost),
           "val_acc=", "{:.5f}".format(acc), "time=", "{:.5f}".format(time.time() - t))
