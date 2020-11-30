@@ -174,5 +174,4 @@ class GCN(Model):
                                             logging=self.logging))
 
     def predict(self):
-        print('abc',tf.nn.softmax(self.outputs))
         return tf.nn.softmax(self.outputs)
