@@ -40,7 +40,7 @@ flags.DEFINE_integer('max_degree', 3, 'Maximum Chebyshev polynomial degree.')
 adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_data(FLAGS.dataset)
 # print(y_val)
 
-# """
+"""
 # Some preprocessing
 features = preprocess_features(features)
 
@@ -124,11 +124,11 @@ print("Test set results:", "cost=", "{:.5f}".format(test_cost),
       "accuracy=", "{:.5f}".format(test_acc), "time=", "{:.5f}".format(test_duration))
 # save = model.save(sess)
 
-# """
-feed_dict = construct_feed_dict(features, support, y_train, train_mask, placeholders)
-feed_dict.update({placeholders['dropout']: FLAGS.dropout})
-outs = sess.run(model.predict(), feed_dict=feed_dict)
-print(outs, outs.shape)
+"""
+# feed_dict = construct_feed_dict(features, support, y_train, train_mask, placeholders)
+# feed_dict.update({placeholders['dropout']: FLAGS.dropout})
+# outs = sess.run(model.predict(), feed_dict=feed_dict)
+# print(outs, outs.shape)
 
 # outs = sess.run([model.opt_op, model.loss, model.accuracy, model.predict()], feed_dict=feed_dict)
 # Epoch: 0200 train_loss= 0.56547 train_acc= 0.97857 val_loss= 1.04744 val_acc= 0.78600 time= 0.24111 vs model.predict()
