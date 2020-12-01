@@ -103,7 +103,7 @@ sess.run(tf.compat.v1.global_variables_initializer())
 cost_val = []
 
 # Train model
-for epoch in range(1000):
+for epoch in range(FLAGS.epochs):
 
     t = time.time()
     # Construct feed dictionary
