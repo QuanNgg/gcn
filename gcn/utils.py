@@ -5,6 +5,7 @@ import scipy.sparse as sp
 from scipy.sparse.linalg.eigen.arpack import eigsh
 import sys
 
+from gcn.test import extract_matrix
 
 def parse_index_file(filename):
     """Parse index file."""
@@ -41,6 +42,7 @@ def load_data(dataset_str):
     :param dataset_str: Dataset name
     :return: All data input files loaded (as well the training/test data).
     """
+    """
     names = ['x', 'y', 'tx', 'ty', 'allx', 'ally', 'graph']
     objects = []
     for i in range(len(names)):
@@ -49,10 +51,8 @@ def load_data(dataset_str):
                 objects.append(pkl.load(f, encoding='latin1'))
             else:
                 objects.append(pkl.load(f))
-
     x, y, tx, ty, allx, ally, graph = tuple(objects)
 
-    # print(ally)
     test_idx_reorder = parse_index_file("data/ind.{}.test.index".format(dataset_str))
     test_idx_range = np.sort(test_idx_reorder)
 
@@ -84,6 +84,27 @@ def load_data(dataset_str):
     y_train = np.zeros(labels.shape)
     y_val = np.zeros(labels.shape)
     y_test = np.zeros(labels.shape)
+    y_train[train_mask, :] = labels[train_mask, :]
+    y_val[val_mask, :] = labels[val_mask, :]
+    y_test[test_mask, :] = labels[test_mask, :]
+    """
+
+    features, graph, labels = extract_matrix.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
+    adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
+    idx_test = []
+    for i in range(19945):
+        idx_test.append(i)
+    # labels = ally
+    y_train = np.zeros(labels.shape)
+    y_val = np.zeros(labels.shape)
+    y_test = np.zeros(labels.shape)
+
+    idx_train = range(len(labels))
+    idx_val = range(len(labels), len(labels)+500)
+    train_mask = sample_mask(idx_train, labels.shape[0])
+    val_mask = train_mask
+    test_mask = sample_mask(idx_test, labels.shape[0])
+
     y_train[train_mask, :] = labels[train_mask, :]
     y_val[val_mask, :] = labels[val_mask, :]
     y_test[test_mask, :] = labels[test_mask, :]

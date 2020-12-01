@@ -6,8 +6,8 @@ import tensorflow as tf
 
 from gcn.utils import *
 from gcn.models import GCN, MLP
-from gcn.test import input
-from  gcn.test.print_exception import PrintException
+from gcn.test import extract_matrix
+from gcn.test.print_exception import PrintException
 import numpy
 numpy.set_printoptions(threshold=sys.maxsize)
 
@@ -36,29 +36,26 @@ flags.DEFINE_float('weight_decay', 5e-4, 'Weight for L2 loss on embedding matrix
 flags.DEFINE_integer('early_stopping', 10, 'Tolerance for early stopping (# of epochs).')
 flags.DEFINE_integer('max_degree', 3, 'Maximum Chebyshev polynomial degree.')
 
-"""
 # Load data
 adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_data(FLAGS.dataset)
 # print(y_val)
 
 # Some preprocessing
 features = preprocess_features(features)
-"""
+# """
 
-features, graph, y_train = input.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
-adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
-labels = y_train
-idx_train = range(len(y_train))
-train_mask = sample_mask(idx_train, labels.shape[0])
-
-y_val = np.zeros(labels.shape)
-
-idx_val = range(len(y_train))
-val_mask = sample_mask(idx_val, labels.shape[0])
-y_val[val_mask, :] = labels[val_mask, :]
-
-
-features = preprocess_features(features)
+# features, graph, y_train = input.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
+# adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
+# labels = y_train
+# idx_train = range(len(y_train))
+# train_mask = sample_mask(idx_train, labels.shape[0])
+#
+# y_val = np.zeros(labels.shape)
+#
+# idx_val = range(len(y_train))
+# val_mask = sample_mask(idx_val, labels.shape[0])
+# y_val[val_mask, :] = labels[val_mask, :]
+# features = preprocess_features(features)
 
 if FLAGS.model == 'gcn':
     support = [preprocess_adj(adj)]
@@ -106,7 +103,7 @@ sess.run(tf.compat.v1.global_variables_initializer())
 cost_val = []
 
 # Train model
-for epoch in range(FLAGS.epochs):
+for epoch in range(1000):
 
     t = time.time()
     # Construct feed dictionary
@@ -131,21 +128,18 @@ for epoch in range(FLAGS.epochs):
 
 print("Optimization Finished!")
 
-"""
+# """
 # Testing
 test_cost, test_acc, test_duration = evaluate(features, support, y_test, test_mask, placeholders)
 print("Test set results:", "cost=", "{:.5f}".format(test_cost),
       "accuracy=", "{:.5f}".format(test_acc), "time=", "{:.5f}".format(test_duration))
-"""
 
-save = model.save(sess)
+# save = model.save(sess)
 
-"""
 feed_dict = construct_feed_dict(features, support, y_train, train_mask, placeholders)
 feed_dict.update({placeholders['dropout']: FLAGS.dropout})
 outs = sess.run(model.predict(), feed_dict=feed_dict)
 print(outs, outs.shape)
-"""
 
 # outs = sess.run([model.opt_op, model.loss, model.accuracy, model.predict()], feed_dict=feed_dict)
 # Epoch: 0200 train_loss= 0.56547 train_acc= 0.97857 val_loss= 1.04744 val_acc= 0.78600 time= 0.24111 vs model.predict()

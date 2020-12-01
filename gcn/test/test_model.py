@@ -1,7 +1,7 @@
 import tensorflow as tf
 from gcn.models import GCN, MLP
 from gcn.utils import *
-from gcn.test import input
+from gcn.test import extract_matrix
 import numpy
 numpy.set_printoptions(threshold=sys.maxsize)
 # features, graph, y_train = input.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
@@ -23,7 +23,7 @@ flags.DEFINE_integer('early_stopping', 10, 'Tolerance for early stopping (# of e
 flags.DEFINE_integer('max_degree', 3, 'Maximum Chebyshev polynomial degree.')
 
 # adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_data(FLAGS.dataset)
-features, graph, y_train = input.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
+features, graph, y_train = extract_matrix.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
 adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
 labels = y_train
 idx_train = range(len(y_train))
