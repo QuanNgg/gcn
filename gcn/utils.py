@@ -52,7 +52,6 @@ def load_data(dataset_str):
 
     x, y, tx, ty, allx, ally, graph = tuple(objects)
 
-    print(ally)
     test_idx_reorder = parse_index_file("data/ind.{}.test.index".format(dataset_str))
     test_idx_range = np.sort(test_idx_reorder)
 
@@ -77,6 +76,8 @@ def load_data(dataset_str):
     idx_test = test_idx_range.tolist()
     idx_train = range(len(y))
     idx_val = range(len(y), len(y)+500)
+    # labels.shape = (2708, 7)  labels.shape[0] = 2708
+    # train_mask : labels true/false of ally phan loai label/unlabel
     train_mask = sample_mask(idx_train, labels.shape[0])
     val_mask = sample_mask(idx_val, labels.shape[0])
     test_mask = sample_mask(idx_test, labels.shape[0])
