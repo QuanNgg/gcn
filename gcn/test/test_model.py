@@ -70,22 +70,33 @@ sess.run(tf.compat.v1.global_variables_initializer())
 model = GCN(placeholders, input_dim=features[2][1], logging=True)
 model.load(sess)
 
-# Train model
-# for epoch in range(FLAGS.epochs):
-#     # Construct feed dictionary
-#     feed_dict = construct_feed_dict(features, support, y_train, train_mask, placeholders)
-#     feed_dict.update({placeholders['dropout']: FLAGS.dropout})
-#
-#     # Training step
-#     outs = sess.run([model.opt_op, model.loss, model.accuracy], feed_dict=feed_dict)
-#     # outs = sess.run([model.opt_op, model.loss, model.accuracy, model.predict()], feed_dict=feed_dict)
-#
-#     # Print results
-#     print("Epoch:", '%04d' % (epoch + 1), "train_loss=", "{:.5f}".format(outs[1]),
-#           "train_acc=", "{:.5f}".format(outs[2]), "val_loss="
-#           )
 feed_dict = construct_feed_dict(features, support, y_train, train_mask, placeholders)
 feed_dict.update({placeholders['dropout']: FLAGS.dropout})
 outs = sess.run(model.predict(), feed_dict=feed_dict)
-print(outs, outs.shape)
+# print(outs, outs.shape)
+predict = np.zeros((19945), dtype=int)
+i = 0
+for row in outs:
+    max = 0
+    j = 0
+    for percent in row:
+        if max < percent:
+            max = percent
+            predict[i] = j
+        j+=1
+    i+=1
 
+true = np.zeros((19945), dtype=int)
+for i_true in range(0, 19945, 5):
+    true[i_true] = 0
+    true[i_true+1] = 1
+    true[i_true+2] = 2
+    true[i_true+3] = 3
+    true[i_true+4] = 4
+
+# import sys
+# import numpy
+# numpy.set_printoptions(threshold=sys.maxsize)
+from sklearn.metrics import confusion_matrix
+a= confusion_matrix(true, predict, labels=[0,1,2,3,4])
+print(a)
