@@ -10,7 +10,7 @@ from gcn.test import extract_matrix
 import json
 from collections import defaultdict
 # print(json.loads(a), type(a))
-features, graph, lables = extract_matrix.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
+# features, graph, lables = extract_matrix.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
 # print(pickle.dumps(graph))
 
 # with open('./extract_matrix/graph.txt', 'w') as f:
@@ -27,3 +27,7 @@ features, graph, lables = extract_matrix.get_data_from_file('./raw/text_1.txt', 
 # c = defaultdict(int,b)
 # print(c)
 # numpy.array(list(a), dtype=int)
+a = numpy.array([1,2])
+b = numpy.array([2,3])
+dist = numpy.linalg.norm(a-b)
+print(dist)

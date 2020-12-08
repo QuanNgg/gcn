@@ -22,18 +22,18 @@ flags.DEFINE_float('weight_decay', 5e-4, 'Weight for L2 loss on embedding matrix
 flags.DEFINE_integer('early_stopping', 10, 'Tolerance for early stopping (# of epochs).')
 flags.DEFINE_integer('max_degree', 3, 'Maximum Chebyshev polynomial degree.')
 
-# adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_data(FLAGS.dataset)
-features, graph, y_train = extract_matrix.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
-adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
-labels = y_train
-idx_train = range(len(y_train))
-train_mask = sample_mask(idx_train, labels.shape[0])
-
-y_val = np.zeros(labels.shape)
-
-idx_val = range(len(y_train))
-val_mask = sample_mask(idx_val, labels.shape[0])
-y_val[val_mask, :] = labels[val_mask, :]
+adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_data(FLAGS.dataset)
+# features, graph, y_train, adj = extract_matrix.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
+# adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
+# labels = y_train
+# idx_train = range(len(y_train))
+# train_mask = sample_mask(idx_train, labels.shape[0])
+#
+# y_val = np.zeros(labels.shape)
+#
+# idx_val = range(len(y_train))
+# val_mask = sample_mask(idx_val, labels.shape[0])
+# y_val[val_mask, :] = labels[val_mask, :]
 
 
 
@@ -73,8 +73,10 @@ model.load(sess)
 feed_dict = construct_feed_dict(features, support, y_train, train_mask, placeholders)
 feed_dict.update({placeholders['dropout']: FLAGS.dropout})
 outs = sess.run(model.predict(), feed_dict=feed_dict)
-# print(outs, outs.shape)
-predict = np.zeros((19945), dtype=int)
+print(outs, outs.shape)
+
+"""
+predict = np.zeros((1310), dtype=int)
 i = 0
 for row in outs:
     max = 0
@@ -86,8 +88,8 @@ for row in outs:
         j+=1
     i+=1
 
-true = np.zeros((19945), dtype=int)
-for i_true in range(0, 19945, 5):
+true = np.zeros((1310), dtype=int)
+for i_true in range(0, 1310, 5):
     true[i_true] = 0
     true[i_true+1] = 1
     true[i_true+2] = 2
@@ -98,5 +100,6 @@ for i_true in range(0, 19945, 5):
 # import numpy
 # numpy.set_printoptions(threshold=sys.maxsize)
 from sklearn.metrics import confusion_matrix
-a= confusion_matrix(true, predict, labels=[0,1,2,3,4])
+a= confusion_matrix(true, predict, labels=[0,1,2,3,4]) # , normalize='true'
 print(a)
+"""

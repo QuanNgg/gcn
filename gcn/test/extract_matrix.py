@@ -1,6 +1,8 @@
 from collections import defaultdict
 import numpy as np
 from scipy import sparse
+from scipy.spatial.distance import pdist, squareform
+
 
 def parse_index_file(filename):
     """Parse index file."""
@@ -8,7 +10,6 @@ def parse_index_file(filename):
     for line in open(filename):
         index.append(int(line.strip()))
     return index
-
 
 
 
@@ -35,6 +36,14 @@ def get_pos_label(k, temp_line, num_line_item):
             dk_tt = temp_line[:4]
             rs = dk_tt
             # print('dk_tt', rs)
+        else:
+            for i in range(len(temp_line)):
+                # if i % 2 == 0:
+                #     continue
+                if i == 0:
+                    continue
+                rs.append(temp_line[i])
+
 
     elif num_line_item == 11:
         if k == 4:
@@ -57,6 +66,13 @@ def get_pos_label(k, temp_line, num_line_item):
             dk_tt = temp_line[:4]
             rs = dk_tt
             # print('dk_tt', rs)
+        else:
+            for i in range(len(temp_line)):
+                if i % 2 == 0:
+                    continue
+                if i == 0:
+                    continue
+                rs.append(temp_line[i])
 
     elif num_line_item == 9:
         if k == 4:
@@ -79,13 +95,21 @@ def get_pos_label(k, temp_line, num_line_item):
             dk_tt = temp_line[:4]
             rs = dk_tt
             # print('dk_tt', rs)
+        else:
+            for i in range(len(temp_line)):
+                # if i % 2 == 0:
+                #     continue
+                if i == 0:
+                    continue
+                rs.append(temp_line[i])
 
-    for i in range(len(rs)):
-        arr = rs[i].split(" ")
+    arr_pos_center = []
+    for _rs in rs:
+        # for i in range(len(_rs)):
+        arr = _rs.split(" ")
         arr_num = []
-
-        for j in range(len(arr)):
-            arr_num.append(int(arr[j]))
+        for a in arr:
+            arr_num.append(int(a))
 
         min_x, min_y, max_x, max_y = 10000, 10000, 0, 0
         min_x = min(min_x, arr_num[0], arr_num[2], arr_num[4], arr_num[6])
@@ -100,8 +124,8 @@ def get_pos_label(k, temp_line, num_line_item):
         pos_center = [pos_x, pos_y]
 
         # print('pos_center', pos_center)
-
-        return pos_center
+        arr_pos_center.append(pos_center)
+    return arr_pos_center
 
 
 def create_graph(size):
@@ -152,19 +176,24 @@ def get_data_from_file(file_text, file_pos):
             while(k <= num_line_item):
                 # read file position
                 temp_line = pos_lines[k].split(";")
-                pos_center = get_pos_label(k, temp_line, num_line_item)
+                arr_pos_center = get_pos_label(k, temp_line, num_line_item)
                 k += 1
-                if pos_center is None:
-                    continue
-                arr_pos.append(pos_center)
+                for pos_center in arr_pos_center:
+                    arr_pos.append(pos_center)
 
             last = num_line + int(num_line_item)
-            # break
-        # print('arr_pos', len(arr_pos), len(arr_num))
+            # if num_line > 1000:
+            #     break
+            break
+
         graph = create_graph(len(arr_pos))
         matrix_label = create_label(len(arr_pos))
         feature = sparse.csr_matrix(arr_pos)
+        adj = feature.toarray()
+        B = squareform(pdist(adj))
+        adj = sparse.csr_matrix(B)
+        # print(adj)
 
-    return feature, graph, matrix_label
+    return feature, graph, matrix_label, adj
 
-# get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
+get_data_from_file('../raw/text_1.txt', '../raw/pos_1.txt')

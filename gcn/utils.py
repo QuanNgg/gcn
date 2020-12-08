@@ -89,10 +89,11 @@ def load_data(dataset_str):
     y_test[test_mask, :] = labels[test_mask, :]
     """
 
-    features, graph, labels = extract_matrix.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
+    features, graph, labels, adj1 = extract_matrix.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
+    print(labels)
     adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
     idx_test = []
-    for i in range(19945):
+    for i in range(5):
         idx_test.append(i)
     # labels = ally
     y_train = np.zeros(labels.shape)
@@ -100,7 +101,7 @@ def load_data(dataset_str):
     y_test = np.zeros(labels.shape)
 
     idx_train = range(len(labels))
-    idx_val = range(len(labels), len(labels)+500)
+    # idx_val = range(len(labels), len(labels)+500)
     train_mask = sample_mask(idx_train, labels.shape[0])
     val_mask = train_mask
     test_mask = sample_mask(idx_test, labels.shape[0])
@@ -109,7 +110,7 @@ def load_data(dataset_str):
     y_val[val_mask, :] = labels[val_mask, :]
     y_test[test_mask, :] = labels[test_mask, :]
 
-    return adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask
+    return adj1, features, y_train, y_val, y_test, train_mask, val_mask, test_mask
 
 
 def sparse_to_tuple(sparse_mx):

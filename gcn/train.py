@@ -39,10 +39,12 @@ flags.DEFINE_integer('max_degree', 3, 'Maximum Chebyshev polynomial degree.')
 # Load data
 adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_data(FLAGS.dataset)
 # print(y_val)
+# print(shape=tf.constant(features[2], dtype=tf.int64))
+# print(adj)
+"""
 
 # Some preprocessing
 features = preprocess_features(features)
-# """
 
 # features, graph, y_train = input.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
 # adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
@@ -122,19 +124,19 @@ for epoch in range(FLAGS.epochs):
           "train_acc=", "{:.5f}".format(outs[2]), "val_loss=", "{:.5f}".format(cost),
           "val_acc=", "{:.5f}".format(acc), "time=", "{:.5f}".format(time.time() - t))
 
-    # if epoch > FLAGS.early_stopping and cost_val[-1] > np.mean(cost_val[-(FLAGS.early_stopping+1):-1]):
-    #     print("Early stopping...")
-    #     break
+    if epoch > FLAGS.early_stopping and cost_val[-1] > np.mean(cost_val[-(FLAGS.early_stopping+1):-1]):
+        print("Early stopping...")
+        break
 
 print("Optimization Finished!")
 
-# """
 # Testing
 test_cost, test_acc, test_duration = evaluate(features, support, y_test, test_mask, placeholders)
 print("Test set results:", "cost=", "{:.5f}".format(test_cost),
       "accuracy=", "{:.5f}".format(test_acc), "time=", "{:.5f}".format(test_duration))
 
 save = model.save(sess)
+"""
 
 # feed_dict = construct_feed_dict(features, support, y_train, train_mask, placeholders)
 # feed_dict.update({placeholders['dropout']: FLAGS.dropout})
