@@ -90,7 +90,7 @@ def load_data(dataset_str):
     """
 
     features, graph, labels, adj1 = extract_matrix.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
-    print(labels)
+
     adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
     idx_test = []
     for i in range(5):
@@ -100,7 +100,7 @@ def load_data(dataset_str):
     y_val = np.zeros(labels.shape)
     y_test = np.zeros(labels.shape)
 
-    idx_train = range(len(labels))
+    idx_train = range(5)
     # idx_val = range(len(labels), len(labels)+500)
     train_mask = sample_mask(idx_train, labels.shape[0])
     val_mask = train_mask

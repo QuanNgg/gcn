@@ -6,9 +6,9 @@ numpy.set_printoptions(threshold=sys.maxsize)
 # y_pred = [[0, 0, 2], [2, 0, 2]]
 # a= confusion_matrix(y_true, y_pred, labels=[0,1])
 # print(a)
-from gcn.test import extract_matrix
-import json
-from collections import defaultdict
+# from gcn.test import extract_matrix
+# import json
+# from collections import defaultdict
 # print(json.loads(a), type(a))
 # features, graph, lables = extract_matrix.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
 # print(pickle.dumps(graph))
@@ -30,4 +30,6 @@ from collections import defaultdict
 a = numpy.array([1,2])
 b = numpy.array([2,3])
 dist = numpy.linalg.norm(a-b)
-print(dist)
+# print(dist)
+c = [1,2,3]
+print(c[0])

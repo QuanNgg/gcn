@@ -70,13 +70,15 @@ sess.run(tf.compat.v1.global_variables_initializer())
 model = GCN(placeholders, input_dim=features[2][1], logging=True)
 model.load(sess)
 
+# print(features[1])
+
 feed_dict = construct_feed_dict(features, support, y_train, train_mask, placeholders)
 feed_dict.update({placeholders['dropout']: FLAGS.dropout})
 outs = sess.run(model.predict(), feed_dict=feed_dict)
-print(outs, outs.shape)
+# print(outs, outs.shape)
 
 """
-predict = np.zeros((1310), dtype=int)
+predict = np.zeros((5), dtype=int)
 i = 0
 for row in outs:
     max = 0
@@ -87,9 +89,11 @@ for row in outs:
             predict[i] = j
         j+=1
     i+=1
+    if i > 4:
+        break
 
-true = np.zeros((1310), dtype=int)
-for i_true in range(0, 1310, 5):
+true = np.zeros((5), dtype=int)
+for i_true in range(0, 5, 5):
     true[i_true] = 0
     true[i_true+1] = 1
     true[i_true+2] = 2

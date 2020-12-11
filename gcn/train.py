@@ -40,8 +40,8 @@ flags.DEFINE_integer('max_degree', 3, 'Maximum Chebyshev polynomial degree.')
 adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_data(FLAGS.dataset)
 # print(y_val)
 # print(shape=tf.constant(features[2], dtype=tf.int64))
-# print(adj)
-"""
+
+# """
 
 # Some preprocessing
 features = preprocess_features(features)
@@ -136,7 +136,7 @@ print("Test set results:", "cost=", "{:.5f}".format(test_cost),
       "accuracy=", "{:.5f}".format(test_acc), "time=", "{:.5f}".format(test_duration))
 
 save = model.save(sess)
-"""
+# """
 
 # feed_dict = construct_feed_dict(features, support, y_train, train_mask, placeholders)
 # feed_dict.update({placeholders['dropout']: FLAGS.dropout})
