@@ -37,7 +37,7 @@ flags.DEFINE_integer('early_stopping', 10, 'Tolerance for early stopping (# of e
 flags.DEFINE_integer('max_degree', 3, 'Maximum Chebyshev polynomial degree.')
 
 # Load data
-adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_data(FLAGS.dataset)
+adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_data()
 # print(y_val)
 # print(shape=tf.constant(features[2], dtype=tf.int64))
 
@@ -105,7 +105,7 @@ sess.run(tf.compat.v1.global_variables_initializer())
 cost_val = []
 
 # Train model
-for epoch in range(FLAGS.epochs):
+for epoch in range(6000):
 
     t = time.time()
     # Construct feed dictionary
@@ -124,9 +124,9 @@ for epoch in range(FLAGS.epochs):
           "train_acc=", "{:.5f}".format(outs[2]), "val_loss=", "{:.5f}".format(cost),
           "val_acc=", "{:.5f}".format(acc), "time=", "{:.5f}".format(time.time() - t))
 
-    if epoch > FLAGS.early_stopping and cost_val[-1] > np.mean(cost_val[-(FLAGS.early_stopping+1):-1]):
-        print("Early stopping...")
-        break
+    # if epoch > FLAGS.early_stopping and cost_val[-1] > np.mean(cost_val[-(FLAGS.early_stopping+1):-1]):
+    #     print("Early stopping...")
+    #     break
 
 print("Optimization Finished!")
 
@@ -145,3 +145,11 @@ save = model.save(sess)
 
 # outs = sess.run([model.opt_op, model.loss, model.accuracy, model.predict()], feed_dict=feed_dict)
 # Epoch: 0200 train_loss= 0.56547 train_acc= 0.97857 val_loss= 1.04744 val_acc= 0.78600 time= 0.24111 vs model.predict()
+# ----2500 line vs 500 epoch: Epoch: 0500 train_loss= 1.31984 train_acc= 0.20000 val_loss= 1.21317 val_acc= 0.60000 time= 2.78532
+# + Test set results: cost= 1.21772 accuracy= 0.60000 time= 1.24332
+# ----1500 num_line vs 1000 epoch: Epoch: 1000 train_loss= 1.13205 train_acc= 0.27939 val_loss= 1.06709 val_acc= 0.80000 time= 0.95047
+# +Test set results: cost= 1.06709 accuracy= 0.80000 time= 0.38039
+# ---- 1500 num_line vs 4000 epoch: Epoch: 4000 train_loss= 0.86916 train_acc= 0.64886 val_loss= 0.77561 val_acc= 0.92061 time= 0.97659
+#+ Test set results: cost= 0.77561 accuracy= 0.92061 time= 0.39368
+# ----1500 num_line vs 6000 epoch Epoch: 6000 train_loss= 0.74351 train_acc= 0.92061 val_loss= 0.69441 val_acc= 0.96031 time= 0.96522
+# + Test set results: cost= 0.69441 accuracy= 0.96031 time= 0.39004

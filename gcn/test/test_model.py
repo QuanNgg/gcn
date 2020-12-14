@@ -22,7 +22,7 @@ flags.DEFINE_float('weight_decay', 5e-4, 'Weight for L2 loss on embedding matrix
 flags.DEFINE_integer('early_stopping', 10, 'Tolerance for early stopping (# of epochs).')
 flags.DEFINE_integer('max_degree', 3, 'Maximum Chebyshev polynomial degree.')
 
-adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_data(FLAGS.dataset)
+adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_data_test()
 # features, graph, y_train, adj = extract_matrix.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
 # adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
 # labels = y_train
@@ -35,7 +35,7 @@ adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_da
 # val_mask = sample_mask(idx_val, labels.shape[0])
 # y_val[val_mask, :] = labels[val_mask, :]
 
-
+print('adj', adj)
 
 features = preprocess_features(features)
 if FLAGS.model == 'gcn':
@@ -70,12 +70,11 @@ sess.run(tf.compat.v1.global_variables_initializer())
 model = GCN(placeholders, input_dim=features[2][1], logging=True)
 model.load(sess)
 
-# print(features[1])
 
 feed_dict = construct_feed_dict(features, support, y_train, train_mask, placeholders)
 feed_dict.update({placeholders['dropout']: FLAGS.dropout})
 outs = sess.run(model.predict(), feed_dict=feed_dict)
-# print(outs, outs.shape)
+print(outs, outs.shape)
 
 """
 predict = np.zeros((5), dtype=int)
