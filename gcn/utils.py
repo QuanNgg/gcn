@@ -89,7 +89,8 @@ def load_data():
     y_test[test_mask, :] = labels[test_mask, :]
     """
 
-    features, graph, labels, adj1, idx_train = extract_matrix.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
+    # features, graph, labels, adj1, idx_train = extract_matrix.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
+    features, graph, labels, adj1, idx_train = extract_matrix.get_data_test_from_file('./raw/text_1.txt', './raw/pos_1.txt')
 
     adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
     # adj1 = adj1.astype(int)

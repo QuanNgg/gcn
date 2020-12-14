@@ -105,7 +105,7 @@ sess.run(tf.compat.v1.global_variables_initializer())
 cost_val = []
 
 # Train model
-for epoch in range(6000):
+for epoch in range(8000):
 
     t = time.time()
     # Construct feed dictionary
@@ -153,3 +153,7 @@ save = model.save(sess)
 #+ Test set results: cost= 0.77561 accuracy= 0.92061 time= 0.39368
 # ----1500 num_line vs 6000 epoch Epoch: 6000 train_loss= 0.74351 train_acc= 0.92061 val_loss= 0.69441 val_acc= 0.96031 time= 0.96522
 # + Test set results: cost= 0.69441 accuracy= 0.96031 time= 0.39004
+# ----6000 num_line vs 8000 epoch: Epoch: 8000 train_loss= 0.97846 train_acc= 0.43871 val_loss= 0.80331 val_acc= 0.76129 time= 0.81284
+# + Test set results: cost= 0.80331 accuracy= 0.76129 time= 0.25455
+# ----8000 num_line vs 8000 epoch: Epoch: 8000 train_loss= 0.84546 train_acc= 0.76302 val_loss= 0.83637 val_acc= 0.76302 time= 1.08696
+# + Test set results: cost= 0.83637 accuracy= 0.76302 time= 0.44519

@@ -75,11 +75,11 @@ def get_pos_label(k, temp_line, num_line_item):
             for _i in temp_line[4:]:
                 rs_unlabel.append(_i)
             # print('dk_tt', rs)
-        else:
-            for i in range(len(temp_line)):
-                if i % 2 == 0:
-                    continue
-                rs_unlabel.append(temp_line[i])
+        # else:
+        #     for i in range(len(temp_line)):
+        #         if i % 2 == 0:
+        #             continue
+        #         rs_unlabel.append(temp_line[i])
 
 
     elif num_line_item == 11:
@@ -112,11 +112,11 @@ def get_pos_label(k, temp_line, num_line_item):
             for _i in temp_line[4:]:
                 rs_unlabel.append(_i)
             # print('dk_tt', rs)
-        else:
-            for i in range(len(temp_line)):
-                if i % 2 == 0:
-                    continue
-                rs_unlabel.append(temp_line[i])
+        # else:
+        #     for i in range(len(temp_line)):
+        #         if i % 2 == 0:
+        #             continue
+        #         rs_unlabel.append(temp_line[i])
 
     elif num_line_item == 9:
         if k == 4:
@@ -149,11 +149,11 @@ def get_pos_label(k, temp_line, num_line_item):
             for _i in temp_line[4:]:
                 rs_unlabel.append(_i)
             # print('dk_tt', rs)
-        else:
-            for i in range(len(temp_line)):
-                if i % 2 == 0:
-                    continue
-                rs_unlabel.append(temp_line[i])
+        # else:
+        #     for i in range(len(temp_line)):
+        #         if i % 2 == 0:
+        #             continue
+        #         rs_unlabel.append(temp_line[i])
 
     arr_pos_center_label = []
     if len(rs) != 0:
@@ -183,30 +183,29 @@ def get_pos_label(k, temp_line, num_line_item):
 
     # get pos_unlabels
     arr_pos_center_unlabel = []
-    for _rs in rs_unlabel:
-        # for i in range(len(_rs)):
-        arr = _rs.split(" ")
-        arr_num1 = []
-        for a in arr:
-            arr_num1.append(int(a))
-
-        min_x, min_y, max_x, max_y = 10000, 10000, 0, 0
-        min_x = min(min_x, arr_num1[0], arr_num1[2], arr_num1[4], arr_num1[6])
-        min_y = min(min_y, arr_num1[1], arr_num1[3], arr_num1[5], arr_num1[7])
-        max_x = max(max_x, arr_num1[0], arr_num1[2], arr_num1[4], arr_num1[6])
-        max_y = max(max_y, arr_num1[1], arr_num1[3], arr_num1[5], arr_num1[7])
-
-        pos_left_down = [min_x , max_y]
-        pos_right_top = [max_x, min_y]
-        pos_x = pos_left_down[0] + (pos_right_top[0] - pos_left_down[0])/2
-        pos_y = pos_right_top[1] + (pos_left_down[1] - pos_right_top[1])/2
-        pos_center = [pos_x, pos_y]
-        arr_pos_center_unlabel.append(pos_center)
+    # for _rs in rs_unlabel:
+    #     # for i in range(len(_rs)):
+    #     arr = _rs.split(" ")
+    #     arr_num1 = []
+    #     for a in arr:
+    #         arr_num1.append(int(a))
+    #
+    #     min_x, min_y, max_x, max_y = 10000, 10000, 0, 0
+    #     min_x = min(min_x, arr_num1[0], arr_num1[2], arr_num1[4], arr_num1[6])
+    #     min_y = min(min_y, arr_num1[1], arr_num1[3], arr_num1[5], arr_num1[7])
+    #     max_x = max(max_x, arr_num1[0], arr_num1[2], arr_num1[4], arr_num1[6])
+    #     max_y = max(max_y, arr_num1[1], arr_num1[3], arr_num1[5], arr_num1[7])
+    #
+    #     pos_left_down = [min_x , max_y]
+    #     pos_right_top = [max_x, min_y]
+    #     pos_x = pos_left_down[0] + (pos_right_top[0] - pos_left_down[0])/2
+    #     pos_y = pos_right_top[1] + (pos_left_down[1] - pos_right_top[1])/2
+    #     pos_center = [pos_x, pos_y]
+    #     arr_pos_center_unlabel.append(pos_center)
 
         # print('pos_center', pos_center)
 
-    return arr_pos_center_label, arr_pos_center_unlabel
-
+    return arr_pos_center_label
 
 
 def get_data_from_file(file_text, file_pos):
@@ -232,16 +231,15 @@ def get_data_from_file(file_text, file_pos):
             while(k <= line_of_one_cmnd):
                 # read file position
                 temp_line = pos_lines[k].split(";")
-                arr_pos_center_label, arr_pos_center_unlabel = get_pos_label(k, temp_line, line_of_one_cmnd)
+                # arr_pos_center_label, arr_pos_center_unlabel = get_pos_label(k, temp_line, line_of_one_cmnd)
+                arr_pos_center_label = get_pos_label(k, temp_line, line_of_one_cmnd)
                 if len(arr_pos_center_label) != 0:
                     pos_labels = pos_labels + arr_pos_center_label
-                if len(arr_pos_center_unlabel) != 0:
-                    pos_unlabels = pos_unlabels + arr_pos_center_unlabel
 
                 k += 1
 
             last = num_line + int(line_of_one_cmnd)
-            if num_line > 1500:
+            if num_line > 3000:
                 break
             # break
 
@@ -386,7 +384,7 @@ def get_data_test_from_file(file_text, file_pos):
                 k += 1
 
             last = num_line + int(line_of_one_cmnd)
-            if num_line > 1500:
+            if num_line > 8000:
                 break
             # break
 
