@@ -3,6 +3,8 @@ from gcn.models import GCN, MLP
 from gcn.utils import *
 from gcn.test import input
 import numpy
+from sklearn.metrics import confusion_matrix
+
 numpy.set_printoptions(threshold=sys.maxsize)
 # features, graph, y_train = input.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
 # adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
@@ -22,7 +24,7 @@ flags.DEFINE_float('weight_decay', 5e-4, 'Weight for L2 loss on embedding matrix
 flags.DEFINE_integer('early_stopping', 10, 'Tolerance for early stopping (# of epochs).')
 flags.DEFINE_integer('max_degree', 3, 'Maximum Chebyshev polynomial degree.')
 
-adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_data(FLAGS.dataset)
+adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask, labels = load_data(FLAGS.dataset)
 features = preprocess_features(features)
 
 if FLAGS.model == 'gcn':
@@ -57,22 +59,27 @@ sess.run(tf.compat.v1.global_variables_initializer())
 model = GCN(placeholders, input_dim=features[2][1], logging=True)
 model.load(sess)
 
-# Train model
-# for epoch in range(FLAGS.epochs):
-#     # Construct feed dictionary
-#     feed_dict = construct_feed_dict(features, support, y_train, train_mask, placeholders)
-#     feed_dict.update({placeholders['dropout']: FLAGS.dropout})
-#
-#     # Training step
-#     outs = sess.run([model.opt_op, model.loss, model.accuracy], feed_dict=feed_dict)
-#     # outs = sess.run([model.opt_op, model.loss, model.accuracy, model.predict()], feed_dict=feed_dict)
-#
-#     # Print results
-#     print("Epoch:", '%04d' % (epoch + 1), "train_loss=", "{:.5f}".format(outs[1]),
-#           "train_acc=", "{:.5f}".format(outs[2]), "val_loss="
-#           )
 feed_dict = construct_feed_dict(features, support, y_train, train_mask, placeholders)
 feed_dict.update({placeholders['dropout']: FLAGS.dropout})
 outs = sess.run(model.predict(), feed_dict=feed_dict)
-print(outs, outs.shape)
+# print(outs, outs.shape)
 
+size = outs.shape[0]
+predict = np.zeros((size), dtype=int)
+i = 0
+for row in outs:
+    max_per = max(row)
+    index = np.where(row == max_per)[0][0]
+    predict[i] = index
+    i+=1
+
+true = np.zeros((size), dtype=int)
+j = 0
+for row in labels:
+    max_per = max(row)
+    index = np.where(row == max_per)[0][0]
+    true[j] = index
+    j+=1
+
+a = confusion_matrix(true, predict, labels=[0,1,2,3,4,5,6] , normalize='true')
+print(a)
