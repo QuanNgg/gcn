@@ -260,7 +260,30 @@ def get_data_from_file(file_text, file_pos):
 def get_pos_label_test(k, temp_line, num_line_item):
     rs = []
     rs_unlabel = []
-    if num_line_item == 10:
+
+    if num_line_item == 9:
+        if k == 4:
+            so = temp_line[:1]
+            rs = so
+            # print('so', rs)
+        elif k == 5:
+            ho_ten = temp_line[:2]
+            rs = ho_ten
+            # print('ho ten', rs)
+        elif k == 6:
+            ngay_sinh = temp_line[:2]
+            rs = ngay_sinh
+            # print('ngay_sinh', rs)
+        elif k == 7:
+            que_quan = temp_line[:2]
+            rs = que_quan
+            # print('que_quan', rs)
+        elif k == 8:
+            dk_tt = temp_line[:4]
+            rs = dk_tt
+            # print('dk_tt', rs)
+
+    elif num_line_item == 10:
         if k == 4:
             so = temp_line[:1]
             rs = so
@@ -302,27 +325,6 @@ def get_pos_label_test(k, temp_line, num_line_item):
             rs = dk_tt
             # print('dk_tt', rs)
 
-    elif num_line_item == 9:
-        if k == 4:
-            so = temp_line[:1]
-            rs = so
-            # print('so', rs)
-        elif k == 5:
-            ho_ten = temp_line[:2]
-            rs = ho_ten
-            # print('ho ten', rs)
-        elif k == 6:
-            ngay_sinh = temp_line[:2]
-            rs = ngay_sinh
-            # print('ngay_sinh', rs)
-        elif k == 7:
-            que_quan = temp_line[:2]
-            rs = que_quan
-            # print('que_quan', rs)
-        elif k == 8:
-            dk_tt = temp_line[:4]
-            rs = dk_tt
-            # print('dk_tt', rs)
 
     arr_pos_center_label = []
     if len(rs) != 0:
@@ -384,7 +386,7 @@ def get_data_test_from_file(file_text, file_pos):
                 k += 1
 
             last = num_line + int(line_of_one_cmnd)
-            if num_line > 8000:
+            if num_line > 12000:
                 break
             # break
 

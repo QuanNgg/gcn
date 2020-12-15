@@ -92,10 +92,11 @@ def load_data():
     # features, graph, labels, adj1, idx_train = extract_matrix.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
     features, graph, labels, adj1, idx_train = extract_matrix.get_data_test_from_file('./raw/text_1.txt', './raw/pos_1.txt')
 
-    adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
+    # adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
     # adj1 = adj1.astype(int)
 
     idx_test = []
+    # for i in range(idx_train):
     for i in range(idx_train):
         idx_test.append(i)
     # labels = ally
@@ -104,8 +105,10 @@ def load_data():
     y_test = np.zeros(labels.shape)
 
     idx_train = range(idx_train)
-    # idx_val = range(len(labels), len(labels)+500)
+    # idx_val = range(idx_train, idx_train+500)
+
     train_mask = sample_mask(idx_train, labels.shape[0])
+    # val_mask = sample_mask(idx_val, labels.shape[0])
     val_mask = train_mask
     test_mask = sample_mask(idx_test, labels.shape[0])
 

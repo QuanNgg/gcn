@@ -35,7 +35,7 @@ adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_da
 # val_mask = sample_mask(idx_val, labels.shape[0])
 # y_val[val_mask, :] = labels[val_mask, :]
 
-print('adj', adj)
+# print('adj', adj)
 
 features = preprocess_features(features)
 if FLAGS.model == 'gcn':
@@ -75,24 +75,19 @@ feed_dict = construct_feed_dict(features, support, y_train, train_mask, placehol
 feed_dict.update({placeholders['dropout']: FLAGS.dropout})
 outs = sess.run(model.predict(), feed_dict=feed_dict)
 print(outs, outs.shape)
+size = outs.shape[0]
 
-"""
-predict = np.zeros((5), dtype=int)
+# """
+predict = np.zeros((size), dtype=int)
 i = 0
 for row in outs:
-    max = 0
-    j = 0
-    for percent in row:
-        if max < percent:
-            max = percent
-            predict[i] = j
-        j+=1
+    max_per = max(row)
+    index = np.where(row == max_per)[0][0]
+    predict[i] = index
     i+=1
-    if i > 4:
-        break
 
-true = np.zeros((5), dtype=int)
-for i_true in range(0, 5, 5):
+true = np.zeros((size), dtype=int)
+for i_true in range(0, size, 5):
     true[i_true] = 0
     true[i_true+1] = 1
     true[i_true+2] = 2
@@ -103,6 +98,7 @@ for i_true in range(0, 5, 5):
 # import numpy
 # numpy.set_printoptions(threshold=sys.maxsize)
 from sklearn.metrics import confusion_matrix
-a= confusion_matrix(true, predict, labels=[0,1,2,3,4]) # , normalize='true'
+# print(predict)
+a= confusion_matrix(true, predict, labels=[0,1,2,3,4])# , normalize='true')
 print(a)
-"""
+# """
