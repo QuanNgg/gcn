@@ -42,14 +42,14 @@ if FLAGS.model == 'gcn':
     support = [preprocess_adj(adj)]
     num_supports = 1
     model_func = GCN
-elif FLAGS.model == 'gcn_cheby':
-    support = chebyshev_polynomials(adj, FLAGS.max_degree)
-    num_supports = 1 + FLAGS.max_degree
-    model_func = GCN
-elif FLAGS.model == 'dense':
-    support = [preprocess_adj(adj)]  # Not used
-    num_supports = 1
-    model_func = MLP
+# elif FLAGS.model == 'gcn_cheby':
+#     support = chebyshev_polynomials(adj, FLAGS.max_degree)
+#     num_supports = 1 + FLAGS.max_degree
+#     model_func = GCN
+# elif FLAGS.model == 'dense':
+#     support = [preprocess_adj(adj)]  # Not used
+#     num_supports = 1
+#     model_func = MLP
 else:
     raise ValueError('Invalid argument for model: ' + str(FLAGS.model))
 
@@ -65,7 +65,7 @@ placeholders = {
 }
 
 sess = tf.compat.v1.Session()
-sess.run(tf.compat.v1.global_variables_initializer())
+# sess.run(tf.compat.v1.global_variables_initializer())
 
 model = GCN(placeholders, input_dim=features[2][1], logging=True)
 model.load(sess)
