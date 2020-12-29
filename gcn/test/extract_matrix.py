@@ -377,14 +377,14 @@ def get_data_test_from_file(file_text, file_pos):
             # item_name = line.split("\t")[0]
             k = 0
             while(k <= line_of_one_cmnd):
-                # read file position
-                temp_line = pos_lines[k].split(";")
+                # read file positiona
+                num = num_line + k
+                temp_line = pos_lines[num].split(";")
                 arr_pos_center_label = get_pos_label_test(k, temp_line, line_of_one_cmnd)
                 if len(arr_pos_center_label) != 0:
                     pos_labels = pos_labels + arr_pos_center_label
 
                 k += 1
-
             last = num_line + int(line_of_one_cmnd)
             if num_line > 12000:
                 break
@@ -400,7 +400,7 @@ def get_data_test_from_file(file_text, file_pos):
 
         idx_train = len(pos_labels)
 
-
+    # print('matrix_label', matrix_label)
     return feature, graph, matrix_label, adj, idx_train
 
-# get_data_from_file('../raw/text_1.txt', '../raw/pos_1.txt')
+# get_data_test_from_file('../raw/text_1.txt', '../raw/pos_1.txt')

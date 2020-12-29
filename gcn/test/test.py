@@ -27,9 +27,48 @@ numpy.set_printoptions(threshold=sys.maxsize)
 # c = defaultdict(int,b)
 # print(c)
 # numpy.array(list(a), dtype=int)
-a = numpy.array([1,2])
-b = numpy.array([2,3])
-dist = numpy.linalg.norm(a-b)
-# print(dist)
-c = [1,2,3]
-print(c[0])
+
+
+import matplotlib.pyplot as plt
+from gcn.test import extract_matrix_v2
+# features, graph, labels, adj1, idx_train = extract_matrix.get_data_test_from_file('../raw/text_1.txt', '../raw/pos_1.txt')
+# features = features.toarray()
+# x = []
+# y = []
+# for fe in features:
+#     x.append(fe[0])
+#     y.append(fe[1])
+# print("x", len(x), len(y))
+# plt.plot(list(x),list(y), "go")
+# plt.show()
+arr_so, arr_hoten, arr_ngaysinh, arr_quequan, arr_hktt = extract_matrix_v2.get_data_from_file('../raw/text_1.txt', '../raw/pos_1.txt')
+# arr_mother = [arr_so, arr_hoten, arr_ngaysinh, arr_quequan, arr_hktt]
+x_so = []
+y_so = []
+x_hoten = []
+y_hoten = []
+x_ngaysinh = []
+y_ngaysinh = []
+x_quequan = []
+y_quequan = []
+x_hktt = []
+y_hktt = []
+for arr in arr_so:
+    x_so.append(arr[0])
+    y_so.append(arr[1])
+for arr in arr_hoten:
+    x_hoten.append(arr[0])
+    y_hoten.append(arr[1])
+for arr in arr_ngaysinh:
+    x_ngaysinh.append(arr[0])
+    y_ngaysinh.append(arr[1])
+for arr in arr_quequan:
+    x_quequan.append(arr[0])
+    y_quequan.append(arr[1])
+for arr in arr_hktt:
+    x_hktt.append(arr[0])
+    y_hktt.append(arr[1])
+plt.xlabel('x')
+plt.ylabel('y')
+plt.plot(x_so, y_so, 'go', x_hoten, y_hoten, 'b*', x_ngaysinh, y_ngaysinh, 'rD', x_quequan, y_quequan, 'y^', x_hktt, y_hktt, 'kX')
+plt.show()
