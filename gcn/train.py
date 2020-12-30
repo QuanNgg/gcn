@@ -4,6 +4,8 @@ from __future__ import print_function
 import time
 import tensorflow as tf
 
+import matplotlib.pyplot as plt
+
 from gcn.utils import *
 from gcn.models import GCN, MLP
 from gcn.test import extract_matrix
@@ -103,9 +105,12 @@ def evaluate(features, support, labels, mask, placeholders):
 sess.run(tf.compat.v1.global_variables_initializer())
 
 cost_val = []
-
+epoch_t = []
+train_acc = []
 # Train model
-for epoch in range(5000):
+for epoch in range(10000):
+    epoch_t.append(epoch)
+
     t = time.time()
     # Construct feed dictionary
     feed_dict = construct_feed_dict(features, support, y_train, train_mask, placeholders)
@@ -122,7 +127,7 @@ for epoch in range(5000):
     print("Epoch:", '%04d' % (epoch + 1), "train_loss=", "{:.5f}".format(outs[1]),
           "train_acc=", "{:.5f}".format(outs[2]), "val_loss=", "{:.5f}".format(cost),
           "val_acc=", "{:.5f}".format(acc), "time=", "{:.5f}".format(time.time() - t))
-
+    train_acc.append("{:.5f}".format(outs[2]))
     # if epoch > FLAGS.early_stopping and cost_val[-1] > np.mean(cost_val[-(FLAGS.early_stopping+1):-1]):
     #     print("Early stopping...")
     #     break
@@ -136,6 +141,12 @@ print("Test set results:", "cost=", "{:.5f}".format(test_cost),
 
 save = model.save(sess)
 sess.close()
+
+plt.xlabel('epoch')
+plt.ylabel('train accury')
+plt.plot(epoch_t, train_acc)
+plt.show()
+
 # """
 
 # feed_dict = construct_feed_dict(features, support, y_train, train_mask, placeholders)
@@ -166,3 +177,5 @@ sess.close()
 # (5255, 5)
 # (8000 numline + 5000 epoch)Epoch: 5000 train_loss= 0.75054 train_acc= 0.70498 val_loss= 0.75336 val_acc= 0.74595 time= 1.22704
 # + Test set results: cost= 0.75336 accuracy= 0.74595 time= 0.48632
+# (8000 num_line + old finetuning + 10000epoch)Epoch: 10000 train_loss= 0.70743 train_acc= 0.76656 val_loss= 0.64367 val_acc= 0.71263 time= 1.68311
+# +Test set results: cost= 0.64367 accuracy= 0.71263 time= 0.66769

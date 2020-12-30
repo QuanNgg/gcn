@@ -164,13 +164,14 @@ def get_pos_label(k, temp_line, num_line_item):
     pos = get_pos(rs)
     if label == 0 and pos[1] > 220:
         return False, 0
-    elif label == 1 and pos[1] < 220:
+    elif label == 1 and (pos[1] < 220 or pos[0] > 600):
         return False, 0
     elif label == 2 and (pos[1] < 355 or pos[1] > 410):
         return False, 0
-    elif label == 3 and (pos[1] < 410 or pos[1] > 490):
+    elif label == 3 and (pos[1] < 430 or pos[1] > 490 or pos[0] > 590 or pos[0] < 420):
         return False, 0
-
+    elif label == 4 and (pos[0] < 410 or pos[1] < 520):
+        return False, 0
     return pos, label
 
 def get_pos(temp_line):
@@ -250,7 +251,7 @@ def get_data_from_file(file_text, file_pos):
                     arr_hktt.append(t_pos)
 
             last = num_line + int(line_of_one_cmnd)
-            if num_line > 12000:
+            if num_line > 8000:
                 break
             # break
 
@@ -267,5 +268,67 @@ def get_data_from_file(file_text, file_pos):
     return feature, matrix_label, adj, idx_train
     # return arr_so, arr_hoten, arr_ngaysinh, arr_quequan, arr_hktt
 
+
+def get_pre_data(file_text, file_pos):
+
+    with open(file_text, encoding="utf8") as f1, open(file_pos, encoding="utf8") as f2:
+        lines = f1.readlines()
+        pos_lines = f2.readlines()
+        last = -1
+
+        arr_so = []
+        arr_ngaysinh = []
+        arr_hoten = []
+        arr_quequan = []
+        arr_hktt = []
+
+        pos = []
+        for num_line, line in enumerate(lines):
+            if num_line <= last:
+                continue
+            line_of_one_cmnd = int(line.split("\t")[1])
+            # item_name = line.split("\t")[0]
+            k = 0
+            while(k <= line_of_one_cmnd):
+                # read file position
+                num = num_line + k
+                temp_line = pos_lines[num].split(";")
+                # print('temp_line', temp_line)
+                t_pos, label = get_pos_label(k, temp_line, line_of_one_cmnd)
+
+                k += 1
+
+                if t_pos == False:
+                    continue
+                if label == -1:
+                    continue
+                elif label == 0:
+                    arr_so.append(t_pos)
+                elif label == 1:
+                    arr_hoten.append(t_pos)
+                elif label == 2:
+                    arr_ngaysinh.append(t_pos)
+                elif label == 3:
+                    arr_quequan.append(t_pos)
+                elif label == 4:
+                    arr_hktt.append(t_pos)
+
+            last = num_line + int(line_of_one_cmnd)
+            if num_line > 12000:
+                break
+            # break
+
+        pos = arr_so + arr_hoten + arr_ngaysinh + arr_quequan + arr_hktt
+        # matrix_label = create_label(len(pos), len(arr_so), len(arr_hoten), len(arr_ngaysinh), len(arr_quequan), len(arr_hktt))
+        #
+        # feature = sparse.csr_matrix(pos)
+        # adj = feature.toarray()
+        # B = squareform(pdist(adj))
+        # adj = sparse.csr_matrix(B)
+        #
+        # idx_train = len(pos)
+
+    # return feature, matrix_label, adj, idx_train
+    return (pos), (arr_so), (arr_hoten), (arr_ngaysinh), (arr_quequan), (arr_hktt)
 
 # get_data_from_file('../raw/text_1.txt', '../raw/pos_1.txt')

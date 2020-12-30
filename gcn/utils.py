@@ -6,6 +6,7 @@ from scipy.sparse.linalg.eigen.arpack import eigsh
 import sys
 
 from gcn.test import extract_matrix
+from gcn.test import extract_matrix_v2
 
 def parse_index_file(filename):
     """Parse index file."""
@@ -90,7 +91,9 @@ def load_data():
     """
 
     # features, graph, labels, adj1, idx_train = extract_matrix.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
-    features, graph, labels, adj1, idx_train = extract_matrix.get_data_test_from_file('./raw/text_1.txt', './raw/pos_1.txt')
+    # features, graph, labels, adj1, idx_train = extract_matrix.get_data_test_from_file('./raw/text_1.txt', './raw/pos_1.txt')
+
+    features, labels, adj1, idx_train = extract_matrix_v2.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
 
     # adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
     # adj1 = adj1.astype(int)
@@ -120,9 +123,9 @@ def load_data():
 
 
 def load_data_test():
-    features, graph, labels, adj1, idx_train = extract_matrix.get_data_test_from_file('./raw/text_1.txt', './raw/pos_1.txt')
+    # features, graph, labels, adj1, idx_train = extract_matrix.get_data_test_from_file('./raw/text_1.txt', './raw/pos_1.txt')
+    features, labels, adj1, idx_train = extract_matrix_v2.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
 
-    adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
     # adj1 = adj1.astype(int)
 
     idx_test = []

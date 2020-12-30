@@ -2,6 +2,9 @@ import tensorflow as tf
 from gcn.models import GCN, MLP
 from gcn.utils import *
 from gcn.test import extract_matrix
+from gcn.test import extract_matrix_v2
+
+
 import numpy
 numpy.set_printoptions(threshold=sys.maxsize)
 # features, graph, y_train = input.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
@@ -22,7 +25,7 @@ flags.DEFINE_float('weight_decay', 5e-4, 'Weight for L2 loss on embedding matrix
 flags.DEFINE_integer('early_stopping', 10, 'Tolerance for early stopping (# of epochs).')
 flags.DEFINE_integer('max_degree', 3, 'Maximum Chebyshev polynomial degree.')
 
-adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_data_test()
+adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_data()
 # features, graph, y_train, adj = extract_matrix.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
 # adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
 # labels = y_train
@@ -79,6 +82,7 @@ size = outs.shape[0]
 
 # """
 predict = np.zeros((size), dtype=int)
+
 i = 0
 for row in outs:
     max_per = max(row)
@@ -86,13 +90,29 @@ for row in outs:
     predict[i] = index
     i+=1
 
-true = np.zeros((size), dtype=int)
-for i_true in range(0, size, 5):
-    true[i_true] = 0
-    true[i_true+1] = 1
-    true[i_true+2] = 2
-    true[i_true+3] = 3
-    true[i_true+4] = 4
+print('predict',predict)
+all, so_size, hoten_size, ngaysinh_size, quequan_size, hktt_size = extract_matrix_v2.get_pre_data('./raw/text_1.txt', './raw/pos_1.txt')
+true = np.zeros(len(all), dtype=int)
+
+for i in range(len(all)):
+    if i < len(so_size):
+        true[i] = 0
+    elif i < len(so_size) + len(hoten_size):
+        true[i] = 1
+    elif i < len(so_size) + len(hoten_size) + len(ngaysinh_size):
+        true[i] = 2
+    elif i < len(so_size) + len(hoten_size) + len(ngaysinh_size) + len(quequan_size):
+        true[i] = 3
+    else:
+        true[i] = 4
+
+# true = np.zeros((size), dtype=int)
+# for i_true in range(0, size, 5):
+#     true[i_true] = 0
+#     true[i_true+1] = 1
+#     true[i_true+2] = 2
+#     true[i_true+3] = 3
+#     true[i_true+4] = 4
 
 # import sys
 # import numpy

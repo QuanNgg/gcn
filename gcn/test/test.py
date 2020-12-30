@@ -41,7 +41,7 @@ from gcn.test import extract_matrix_v2
 # print("x", len(x), len(y))
 # plt.plot(list(x),list(y), "go")
 # plt.show()
-arr_so, arr_hoten, arr_ngaysinh, arr_quequan, arr_hktt = extract_matrix_v2.get_data_from_file('../raw/text_1.txt', '../raw/pos_1.txt')
+all, arr_so, arr_hoten, arr_ngaysinh, arr_quequan, arr_hktt = extract_matrix_v2.get_pre_data('../raw/text_1.txt', '../raw/pos_1.txt')
 # arr_mother = [arr_so, arr_hoten, arr_ngaysinh, arr_quequan, arr_hktt]
 x_so = []
 y_so = []
@@ -72,3 +72,4 @@ plt.xlabel('x')
 plt.ylabel('y')
 plt.plot(x_so, y_so, 'go', x_hoten, y_hoten, 'b*', x_ngaysinh, y_ngaysinh, 'rD', x_quequan, y_quequan, 'y^', x_hktt, y_hktt, 'kX')
 plt.show()
+# plt.savefig('/home/hq-lg/gcn/gcn/pictures/test.jpg')
