@@ -90,7 +90,6 @@ for row in outs:
     predict[i] = index
     i+=1
 
-print('predict',predict)
 all, so_size, hoten_size, ngaysinh_size, quequan_size, hktt_size = extract_matrix_v2.get_pre_data('./raw/text_1.txt', './raw/pos_1.txt')
 true = np.zeros(len(all), dtype=int)
 

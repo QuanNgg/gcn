@@ -164,13 +164,13 @@ def get_pos_label(k, temp_line, num_line_item):
     pos = get_pos(rs)
     if label == 0 and pos[1] > 220:
         return False, 0
-    elif label == 1 and (pos[1] < 220 or pos[0] > 600):
+    elif label == 1 and (pos[1] < 220 or pos[0] > 600 or pos[1] > 300):
         return False, 0
-    elif label == 2 and (pos[1] < 355 or pos[1] > 410):
+    elif label == 2 and (pos[1] < 355 or pos[1] > 410 or pos[0] > 490):
         return False, 0
-    elif label == 3 and (pos[1] < 430 or pos[1] > 490 or pos[0] > 590 or pos[0] < 420):
+    elif label == 3 and (pos[1] < 430 or pos[1] > 490 or pos[0] > 480 or pos[0] < 380):
         return False, 0
-    elif label == 4 and (pos[0] < 410 or pos[1] < 520):
+    elif label == 4 and (pos[1] < 540 or pos[0] > 620 or pos[0] < 490):
         return False, 0
     return pos, label
 
@@ -251,7 +251,7 @@ def get_data_from_file(file_text, file_pos):
                     arr_hktt.append(t_pos)
 
             last = num_line + int(line_of_one_cmnd)
-            if num_line > 8000:
+            if num_line > 10000:
                 break
             # break
 
@@ -314,7 +314,7 @@ def get_pre_data(file_text, file_pos):
                     arr_hktt.append(t_pos)
 
             last = num_line + int(line_of_one_cmnd)
-            if num_line > 12000:
+            if num_line > 10000:
                 break
             # break
 
