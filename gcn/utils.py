@@ -93,11 +93,13 @@ def load_data():
     # features, graph, labels, adj1, idx_train = extract_matrix.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
     # features, graph, labels, adj1, idx_train = extract_matrix.get_data_test_from_file('./raw/text_1.txt', './raw/pos_1.txt')
 
-    features, labels, adj1, idx_train = extract_matrix_v2.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
+    features, labels, adj1, idx_train = extract_matrix_v2.get_data_from_file_test('/home/hq-lg/gcn/gcn/raw/text_1.txt', '/home/hq-lg/gcn/gcn/raw/pos_1.txt')
 
     # adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
     # adj1 = adj1.astype(int)
 
+    # idx_train = 1978
+    print('idx_train', idx_train)
     idx_test = []
     # for i in range(idx_train):
     for i in range(idx_train):

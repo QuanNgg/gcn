@@ -11,8 +11,6 @@ numpy.set_printoptions(threshold=sys.maxsize)
 # adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
 
 
-
-
 flags = tf.app.flags
 FLAGS = flags.FLAGS
 flags.DEFINE_string('dataset', 'cora', 'Dataset string.')  # 'cora', 'citeseer', 'pubmed'
@@ -25,34 +23,15 @@ flags.DEFINE_float('weight_decay', 5e-4, 'Weight for L2 loss on embedding matrix
 flags.DEFINE_integer('early_stopping', 10, 'Tolerance for early stopping (# of epochs).')
 flags.DEFINE_integer('max_degree', 3, 'Maximum Chebyshev polynomial degree.')
 
-adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_data()
-# features, graph, y_train, adj = extract_matrix.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
-# adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
-# labels = y_train
-# idx_train = range(len(y_train))
-# train_mask = sample_mask(idx_train, labels.shape[0])
-#
-# y_val = np.zeros(labels.shape)
-#
-# idx_val = range(len(y_train))
-# val_mask = sample_mask(idx_val, labels.shape[0])
-# y_val[val_mask, :] = labels[val_mask, :]
+# """
 
-# print('adj', adj)
+adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_data()
 
 features = preprocess_features(features)
 if FLAGS.model == 'gcn':
     support = [preprocess_adj(adj)]
     num_supports = 1
     model_func = GCN
-# elif FLAGS.model == 'gcn_cheby':
-#     support = chebyshev_polynomials(adj, FLAGS.max_degree)
-#     num_supports = 1 + FLAGS.max_degree
-#     model_func = GCN
-# elif FLAGS.model == 'dense':
-#     support = [preprocess_adj(adj)]  # Not used
-#     num_supports = 1
-#     model_func = MLP
 else:
     raise ValueError('Invalid argument for model: ' + str(FLAGS.model))
 
@@ -77,10 +56,14 @@ model.load(sess)
 feed_dict = construct_feed_dict(features, support, y_train, train_mask, placeholders)
 feed_dict.update({placeholders['dropout']: FLAGS.dropout})
 outs = sess.run(model.predict(), feed_dict=feed_dict)
-print(outs, outs.shape)
+# print(outs)
+print(outs.shape)
 size = outs.shape[0]
 
-# """
+
+all, so_size, hoten_size, ngaysinh_size, quequan_size, hktt_size = extract_matrix_v2.get_pre_data_test('/home/hq-lg/gcn/gcn/raw/text_1.txt', '/home/hq-lg/gcn/gcn/raw/pos_1.txt')
+
+
 predict = np.zeros((size), dtype=int)
 
 i = 0
@@ -90,7 +73,8 @@ for row in outs:
     predict[i] = index
     i+=1
 
-all, so_size, hoten_size, ngaysinh_size, quequan_size, hktt_size = extract_matrix_v2.get_pre_data('./raw/text_1.txt', './raw/pos_1.txt')
+predict1 = predict[1978:]
+
 true = np.zeros(len(all), dtype=int)
 
 for i in range(len(all)):
@@ -113,11 +97,11 @@ for i in range(len(all)):
 #     true[i_true+3] = 3
 #     true[i_true+4] = 4
 
-# import sys
-# import numpy
-# numpy.set_printoptions(threshold=sys.maxsize)
+import sys
+import numpy
 from sklearn.metrics import confusion_matrix
 # print(predict)
-a= confusion_matrix(true, predict, labels=[0,1,2,3,4])# , normalize='true')
+a= confusion_matrix(true, predict1, labels=[0,1,2,3,4])# , normalize='true')
 print(a)
 # """
+

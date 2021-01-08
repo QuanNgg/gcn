@@ -108,7 +108,7 @@ cost_val = []
 epoch_t = []
 train_acc = []
 # Train model
-for epoch in range(15000):
+for epoch in range(20000):
     epoch_t.append(epoch)
 
     t = time.time()
@@ -187,3 +187,7 @@ plt.show()
 # + Test set results: cost= 0.65042 accuracy= 0.90220 time= 0.11172
 # Epoch: 15000 train_loss= 0.58134 train_acc= 0.89558 val_loss= 0.59764 val_acc= 0.96386 time= 0.34069
 # + Test set results: cost= 0.59764 accuracy= 0.96386 time= 0.13535
+# No finetuning pos [0] 8k + 20K Epoch: 20000 train_loss= 0.61675 train_acc= 0.75059 val_loss= 0.58411 val_acc= 0.77940 time= 0.53235
+# + Test set results: cost= 0.58411 accuracy= 0.77940 time= 0.20435
+# finetuning 5k + 20K poch: 20000 train_loss= 0.63648 train_acc= 0.85035 val_loss= 0.59778 val_acc= 0.96259 time= 0.35652
+# + Test set results: cost= 0.59778 accuracy= 0.96259 time= 0.13890

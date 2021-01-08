@@ -39,9 +39,11 @@ from gcn.test import extract_matrix_v2
 #     x.append(fe[0])
 #     y.append(fe[1])
 # print("x", len(x), len(y))
-# plt.plot(list(x),list(y), "go")
+# plt.plot(list(x),list(y), "go")q
 # plt.show()
-all, arr_so, arr_hoten, arr_ngaysinh, arr_quequan, arr_hktt = extract_matrix_v2.get_pre_data('../raw/text_1.txt', '../raw/pos_1.txt')
+# all, arr_so, arr_hoten, arr_ngaysinh, arr_quequan, arr_hktt = extract_matrix_v2.get_pre_data('/home/hq-lg/gcn/gcn/data_cmnd/text_test.txt', '/home/hq-lg/gcn/gcn/data_cmnd/pos_test.txt')
+all, arr_so, arr_hoten, arr_ngaysinh, arr_quequan, arr_hktt = extract_matrix_v2.get_pre_data_test('/home/hq-lg/gcn/gcn/raw/text_1.txt', '/home/hq-lg/gcn/gcn/raw/pos_1.txt')
+
 # arr_mother = [arr_so, arr_hoten, arr_ngaysinh, arr_quequan, arr_hktt]
 x_so = []
 y_so = []
