@@ -313,7 +313,7 @@ def get_pos(temp_line):
 
     return [pos_x, pos_y]
 
-def get_data_from_file_test(file_text, file_pos):
+def get_data_from_file_test(file_text, file_pos, is_single):
 
     with open(file_text, encoding="utf8") as f1, open(file_pos, encoding="utf8") as f2:
         lines = f1.readlines()
@@ -358,7 +358,7 @@ def get_data_from_file_test(file_text, file_pos):
                     arr_hktt.append(t_pos)
 
             last = num_line + int(line_of_one_cmnd)
-            if num_line > 5000:
+            if num_line > 8000:
                 break
             # break
 
@@ -368,11 +368,13 @@ def get_data_from_file_test(file_text, file_pos):
         idx_train = len(pos)
 
         # get data predict
-        # use for single
-        all, arr_so_test, arr_hoten_test, arr_ngaysinh_test, arr_quequan_test, arr_hktt_test = get_pre_data('/home/hq-lg/gcn/gcn/data_cmnd/text_test.txt', '/home/hq-lg/gcn/gcn/data_cmnd/pos_test.txt')
+        if is_single == 1:
+            # use for single/ use file test
+            all, arr_so_test, arr_hoten_test, arr_ngaysinh_test, arr_quequan_test, arr_hktt_test = get_pre_data('/home/hq-lg/gcn/gcn/data_cmnd/text_test.txt', '/home/hq-lg/gcn/gcn/data_cmnd/pos_test.txt')
+        else:
+            # use for many/ use file train
+            all, arr_so_test, arr_hoten_test, arr_ngaysinh_test, arr_quequan_test, arr_hktt_test = get_pre_data_test('/home/hq-lg/gcn/gcn/raw/text_1.txt', '/home/hq-lg/gcn/gcn/raw/pos_1.txt')
 
-        # use for many
-        # all, arr_so_test, arr_hoten_test, arr_ngaysinh_test, arr_quequan_test, arr_hktt_test = get_pre_data_test('/home/hq-lg/gcn/gcn/raw/text_1.txt', '/home/hq-lg/gcn/gcn/raw/pos_1.txt')
         # intergrate
         pos = pos + arr_so_test + arr_hoten_test + arr_ngaysinh_test + arr_quequan_test + arr_hktt_test
 
@@ -430,7 +432,7 @@ def get_data_from_file(file_text, file_pos):
                     arr_hktt.append(t_pos)
 
             last = num_line + int(line_of_one_cmnd)
-            if num_line > 5000:
+            if num_line > 10000:
                 break
             # break
 
@@ -447,7 +449,7 @@ def get_data_from_file(file_text, file_pos):
     return feature, matrix_label, adj, idx_train
     # return arr_so, arr_hoten, arr_ngaysinh, arr_quequan, arr_hktt
 
-# use for draw graph node and predict single cmnd
+# use for draw graph node and predict single cmnd ? break
 def get_pre_data(file_text, file_pos):
 
     with open(file_text, encoding="utf8") as f1, open(file_pos, encoding="utf8") as f2:
@@ -559,7 +561,7 @@ def get_pre_data_test(file_text, file_pos):
 
             last = num_line + int(line_of_one_cmnd)
 
-            if num_line > 12000:
+            if num_line > 10000:
                 break
             # break
 

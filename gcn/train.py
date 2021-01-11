@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from gcn.utils import *
 from gcn.models import GCN, MLP
 from gcn.test import extract_matrix
-from gcn.test.print_exception import PrintException
+
 import numpy
 numpy.set_printoptions(threshold=sys.maxsize)
 
@@ -108,7 +108,7 @@ cost_val = []
 epoch_t = []
 train_acc = []
 # Train model
-for epoch in range(20000):
+for epoch in range(25000):
     epoch_t.append(epoch)
 
     t = time.time()

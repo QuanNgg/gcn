@@ -1,6 +1,7 @@
 from gcn.test import extract_matrix_v2
 from gcn.test import predict_single
-all, arr_so, arr_hoten, arr_ngaysinh, arr_quequan, arr_hktt = extract_matrix_v2.get_pre_data('../data_cmnd/text_test.txt', '../data_cmnd/pos_test.txt')
+all, arr_so, arr_hoten, arr_ngaysinh, arr_quequan, arr_hktt = extract_matrix_v2.get_pre_data(
+    '../data_cmnd/text_test.txt', '../data_cmnd/pos_test.txt')
 import numpy as np
 
 arr_predict = predict_single.predict_label()

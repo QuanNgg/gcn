@@ -24,7 +24,7 @@ flags.DEFINE_integer('early_stopping', 10, 'Tolerance for early stopping (# of e
 flags.DEFINE_integer('max_degree', 3, 'Maximum Chebyshev polynomial degree.')
 
 def predict_label():
-    adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_data()
+    adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = load_data(1)
     feat = features.toarray()
     print(len(feat))
     features = preprocess_features(features)
@@ -70,7 +70,7 @@ def predict_label():
         i += 1
 
     arr_predict = []
-    for a in range(1978, size, 5):
+    for a in range(size-5, size, 5):
         arr_predict.append({
             'pos_0': feat[a],
             'labels_0': convert_num_to_string(predict[a]),
