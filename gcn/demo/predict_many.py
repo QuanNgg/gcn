@@ -1,15 +1,11 @@
 import tensorflow as tf
-from gcn.models import GCN, MLP
+from gcn.models import GCN
 from gcn.utils import *
-from gcn.test import extract_matrix
-from gcn.test import extract_matrix_v2
 
+from gcn.test import extract_matrix_v2
 
 import numpy
 numpy.set_printoptions(threshold=sys.maxsize)
-# features, graph, y_train = input.get_data_from_file('./raw/text_1.txt', './raw/pos_1.txt')
-# adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
-
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS
@@ -89,16 +85,6 @@ for i in range(len(all)):
     else:
         true[i] = 4
 
-# true = np.zeros((size), dtype=int)
-# for i_true in range(0, size, 5):
-#     true[i_true] = 0
-#     true[i_true+1] = 1
-#     true[i_true+2] = 2
-#     true[i_true+3] = 3
-#     true[i_true+4] = 4
-
-import sys
-import numpy
 from sklearn.metrics import confusion_matrix
 # print(predict)
 a= confusion_matrix(true, predict1, labels=[0,1,2,3,4])# , normalize='true')
